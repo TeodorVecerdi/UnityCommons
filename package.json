@@ -1,0 +1,23 @@
+{
+  "name": "com.github.teodorvecerdi.unitycommons",
+  "version": "1.0.0",
+  "displayName": "Unity Commons",
+  "description": "Library of project-agnostic & reusable scripts.",
+  "unity": "2020.2",
+  "keywords": [
+    "scripts",
+    "library",
+    "common"
+  ],
+  "author": {
+    "name": "Teodor Vecerdi",
+    "email": "teodor.vecerdi@gmail.com",
+    "url": "https://github.com/TeodorVecerdi"
+  },
+  "dependencies": {
+  },
+  "repository": {
+    "url": "https://github.com/TeodorVecerdi/UnityCommons.git",
+    "type": "git"
+  }
+}
