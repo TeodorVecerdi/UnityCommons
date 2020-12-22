@@ -37,6 +37,12 @@ namespace UnityCommons {
             provider.Seed = (uint) DateTime.Now.GetHashCode();
         }
 
+        #region Lists
+        public static T ListItem<T>(IList<T> list) {
+            return list[Range(0, list.Count)];
+        }
+        #endregion
+
         #region General
         public static int Range(int min, int max) {
             if (max <= min)
@@ -70,6 +76,41 @@ namespace UnityCommons {
             if (chance >= 1.0)
                 return true;
             return Float < (double) chance;
+        }
+        #endregion
+
+        #region Geometric
+        public static Vector3 UnitVector3 => new Vector3(Gaussian(), Gaussian(), Gaussian()).normalized;
+
+        public static Vector2 UnitVector2 => new Vector2(Gaussian(), Gaussian()).normalized;
+
+        public static Vector2 InsideUnitCircle {
+            get {
+                Vector2 vector;
+                do {
+                    vector = new Vector2(Float - 0.5f, Float - 0.5f) * 2f;
+                } while (vector.sqrMagnitude > 1.0f);
+
+                return vector;
+            }
+        }
+
+        public static Vector3 InsideUnitCircleVec3 {
+            get {
+                var insideUnitCircle = InsideUnitCircle;
+                return new Vector3(insideUnitCircle.x, 0.0f, insideUnitCircle.y);
+            }
+        }
+
+        public static Vector3 InsideUnitSphere {
+            get {
+                Vector3 vector;
+                do {
+                    vector = new Vector3(Float - 0.5f, Float - 0.5f, Float - 0.5f) * 2f;
+                } while (vector.sqrMagnitude > 1.0f);
+
+                return vector;
+            }
         }
         #endregion
 
@@ -164,14 +205,9 @@ namespace UnityCommons {
                 return e;
             return f;
         }
+
         public static T Element<T>(params T[] items) {
             return ListItem(items);
-        }
-        #endregion
-
-        #region Lists
-        public static T ListItem<T>(IList<T> list) {
-            return list[Range(0, list.Count)];
         }
         #endregion
 
@@ -179,14 +215,16 @@ namespace UnityCommons {
         public static float Range(Vector2 range) {
             return Range(range.x, range.y);
         }
+
         public static int Range(Vector2Int range) {
             return Range(range.x, range.y);
         }
+
         public static int RangeInclusive(Vector2Int range) {
             return RangeInclusive(range.x, range.y);
         }
         #endregion
-        
+
         #region Utilities
         public static float Gaussian(float centerX = 0.0f, float widthFactor = 1f) {
             return Mathf.Sqrt(-2f * Mathf.Log(Float)) * Mathf.Sin(twoPi * Float) * widthFactor + centerX;

@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 
 namespace UnityCommons {
-    [Serializable]
-    public struct SemVer : IEquatable<SemVer>, IComparable<SemVer> {
+    [System.Serializable]
+    public struct SemVer : System.IEquatable<SemVer>, System.IComparable<SemVer> {
         public static readonly SemVer Invalid = new SemVer {MAJOR = -1, MINOR = -1, PATCH = -1};
 
         // ReSharper disable once InconsistentNaming
