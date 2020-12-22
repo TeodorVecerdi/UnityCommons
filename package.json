@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "displayName": "Unity Commons",
   "description": "Library of project-agnostic & reusable scripts.",
-  "unity": "2020.2",
+  "unity": "2017.1",
   "keywords": [
     "scripts",
     "library",
