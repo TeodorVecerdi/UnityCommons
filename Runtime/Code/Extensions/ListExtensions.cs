@@ -28,7 +28,7 @@ namespace UnityCommons {
                 list[count] = obj;
             }
         }
-        #endregion
+#endregion
 
         #region Copy
         public static List<T> DeepCopyStruct<T>(this IEnumerable<T> source) where T : struct {
