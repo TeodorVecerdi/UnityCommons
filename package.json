@@ -3,18 +3,21 @@
   "version": "1.0.3",
   "displayName": "Unity Commons",
   "description": "Library of project-agnostic & reusable scripts.",
-  "unity": "2017.1",
+  "unity": "2018.1",
   "keywords": [
     "scripts",
     "library",
-    "common"
+    "common",
+    "utility"
   ],
   "author": {
     "name": "Teodor Vecerdi",
     "email": "teodor.vecerdi@gmail.com",
     "url": "https://github.com/TeodorVecerdi"
   },
-  "dependencies": {},
+  "dependencies": {
+    "com.unity.textmeshpro": "2.0.0"
+  },
   "repository": {
     "url": "https://github.com/TeodorVecerdi/UnityCommons.git",
     "type": "git"
