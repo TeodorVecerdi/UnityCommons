@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "displayName": "Unity Commons",
   "description": "Library of project-agnostic & reusable scripts.",
+  "license": "MIT",
   "unity": "2018.1",
   "keywords": [
     "scripts",
