@@ -29,6 +29,24 @@ namespace UnityCommons {
 				list[count] = obj;
 			}
 		}
+		
+		public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
+			if (action == null) throw new ArgumentNullException(nameof(action));
+			if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+
+			var list = enumerable.ToList();
+			for (var index = 0; index < list.Count; index++) {
+				action(list[index]);
+			}
+		}
+
+		public static IEnumerable<T> AppendMany<T>(this IEnumerable<T> source, IEnumerable<T> enumerable) {
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+			
+			foreach (var element in source) yield return element;
+			foreach (var element in enumerable) yield return element;
+		}
 
 #endregion
 
@@ -126,11 +144,33 @@ namespace UnityCommons {
 		}
 
 		public static bool IsSorted<T>(this IList<T> list) where T : IComparable<T> {
-			for (var i = 0; i < list.Count - 1; i++) {
-				if (list[i].CompareTo(list[i + 1]) > 0) return false;
-			}
+			return IsSorted(list, (comparable, comparable1) => comparable.CompareTo(comparable1));
+		}
+		
+		public static IEnumerable<T> QuickSorted<T>(this IEnumerable<T> enumerable, Comparison<T> comparison) {
+			if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+			if (comparison == null) throw new ArgumentNullException(nameof(comparison));
+			
+			var list = enumerable.ToList();
+			QuickSort_Impl(list, 0, list.Count - 1, comparison);
+			return list;
+		}
 
-			return true;
+		public static IEnumerable<T> QuickSorted<T>(this IEnumerable<T> enumerable) where T : IComparable<T> {
+			return QuickSorted(enumerable, (comparable, comparable1) => comparable.CompareTo(comparable1));
+		}
+		
+		public static IEnumerable<T> InsertionSorted<T>(this IEnumerable<T> enumerable, Comparison<T> comparison) {
+			if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+			if (comparison == null) throw new ArgumentNullException(nameof(comparison));
+
+			var list = enumerable.ToList();
+			InsertionSort(list, comparison);
+			return list;
+		}
+
+		public static IEnumerable<T> InsertionSorted<T>(this IEnumerable<T> enumerable) where T : IComparable<T> {
+			return InsertionSorted(enumerable, (comparable, comparable1) => comparable.CompareTo(comparable1));
 		}
 
 		public static void QuickSort<T>(this IList<T> list, Comparison<T> comparison) {
@@ -138,7 +178,7 @@ namespace UnityCommons {
 		}
 
 		public static void QuickSort<T>(this IList<T> list) where T : IComparable<T> {
-			QuickSort_Impl(list, 0, list.Count - 1);
+			QuickSort_Impl(list, 0, list.Count - 1, (comparable, comparable1) => comparable.CompareTo(comparable1));
 		}
 
 		public static void InsertionSort<T>(this IList<T> list, Comparison<T> comparison) {
@@ -153,14 +193,7 @@ namespace UnityCommons {
 		}
 
 		public static void InsertionSort<T>(this IList<T> list) where T : IComparable<T> {
-			var count = list.Count;
-			for (var index1 = 1; index1 < count; ++index1) {
-				var y = list[index1];
-				int index2;
-				for (index2 = index1 - 1; index2 >= 0 && list[index2].CompareTo(y) > 0; --index2)
-					list[index2 + 1] = list[index2];
-				list[index2 + 1] = y;
-			}
+			InsertionSort(list, (comparable, comparable1) => comparable.CompareTo(comparable1));
 		}
 
 #endregion
@@ -175,16 +208,6 @@ namespace UnityCommons {
 
 			QuickSort_Impl(list, startIndex, partitionIndex - 1, comparison);
 			QuickSort_Impl(list, partitionIndex + 1, endIndex, comparison);
-		}
-
-		private static void QuickSort_Impl<T>(this IList<T> list, int startIndex, int endIndex) where T : IComparable<T> {
-			if (startIndex >= endIndex)
-				return;
-
-			var partitionIndex = QuickSort_Partition(list, startIndex, endIndex);
-
-			QuickSort_Impl(list, startIndex, partitionIndex - 1);
-			QuickSort_Impl(list, partitionIndex + 1, endIndex);
 		}
 
 		private static int QuickSort_Partition<T>(IList<T> list, int low, int high, Comparison<T> comparison) {
@@ -205,26 +228,7 @@ namespace UnityCommons {
 
 			return lowIndex + 1;
 		}
-
-		private static int QuickSort_Partition<T>(IList<T> list, int low, int high) where T : IComparable<T> {
-			var pivot = list[high];
-			var lowIndex = low - 1;
-
-			for (var j = low; j < high; j++)
-				if (list[j].CompareTo(pivot) <= 0) {
-					lowIndex++;
-					var temp = list[lowIndex];
-					list[lowIndex] = list[j];
-					list[j] = temp;
-				}
-
-			var temp1 = list[lowIndex + 1];
-			list[lowIndex + 1] = list[high];
-			list[high] = temp1;
-
-			return lowIndex + 1;
-		}
-
+		
 #endregion
 	}
 }
