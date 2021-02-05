@@ -6,7 +6,7 @@ namespace UnityCommons {
 		public static T Instance {
 			get {
 				// Find first object of type T. Other instances are destroyed when Awake is called on them.
-				if (instance == null) instance = FindObjectOfType<T>();
+				if (instance == null) instance = FindObjectOfType<T>(true);
 				if (instance != null) return instance;
 				
 				// Create an object if cannot find an already existing one.
