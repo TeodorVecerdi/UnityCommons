@@ -38,9 +38,9 @@ namespace UnityCommons {
 		[Foldout("Colors"), Label("Default - Main Bar")]
 		public Color DefaultColor = new Color(0x32 / 255.0f, 0xD6 / 255.0f, 0x25 / 255.0f);
 		[Foldout("Colors"), Label("Positive Change - Main Bar")]
-		public Color PositiveChangeColorMain = new Color(0.87f, 0.95f, 0.94f);
+		public Color PositiveChangeColorMain = new Color(0x32 / 255.0f, 0xD6 / 255.0f, 0x25 / 255.0f);
 		[Foldout("Colors"), Label("Positive Change - Secondary Bar")]
-		public Color PositiveChangeColorSecondary = new Color(0x32 / 255.0f, 0xD6 / 255.0f, 0x25 / 255.0f);
+		public Color PositiveChangeColorSecondary = new Color(0.87f, 0.95f, 0.94f);
 		[Foldout("Colors"), Label("Negative Change - Main Bar")]
 		public Color NegativeChangeColorMain = new Color(0.839f, 0.219f, 0.043f);
 		[Foldout("Colors"), Label("Negative Change - Secondary Bar")]
