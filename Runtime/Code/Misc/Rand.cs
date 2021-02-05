@@ -23,6 +23,7 @@ namespace UnityCommons {
 
         public static float Float => provider.GetFloat(iterations++);
         public static int Int => provider.GetInt(iterations++);
+        public static long Long => BitConverter.ToInt64(Bytes(8), 0);
         public static bool Bool => Float < 0.5;
 
         private static ulong StateCompressed {
@@ -38,12 +39,15 @@ namespace UnityCommons {
         }
 
         #region Lists
+
         public static T ListItem<T>(IList<T> list) {
             return list[Range(0, list.Count)];
         }
+
         #endregion
 
         #region General
+
         public static int Range(int min, int max) {
             if (max <= min)
                 return min;
@@ -77,9 +81,19 @@ namespace UnityCommons {
                 return true;
             return Float < (double) chance;
         }
+
+        public static byte[] Bytes(int count) {
+            var buffer = new byte[count];
+            for (var i = 0; i < buffer.Length; i++) {
+                buffer[i] = (byte) (Int % 256);
+            }
+            return buffer;
+        }
+
         #endregion
 
         #region Geometric
+
         public static Vector3 UnitVector3 => new Vector3(Gaussian(), Gaussian(), Gaussian()).normalized;
 
         public static Vector2 UnitVector2 => new Vector2(Gaussian(), Gaussian()).normalized;
@@ -112,9 +126,11 @@ namespace UnityCommons {
                 return vector;
             }
         }
+
         #endregion
 
         #region Seeded
+
         public static bool ChanceSeeded(float chance, int seed) {
             PushState(seed);
             var flag = Chance(chance);
@@ -149,9 +165,18 @@ namespace UnityCommons {
             PopState();
             return num;
         }
+
+        public static byte[] BytesSeeded(int count, int seed) {
+            PushState(seed);
+            var bytes = Bytes(count);
+            PopState();
+            return bytes;
+        }
+
         #endregion
 
         #region Element
+
         public static T Element<T>(T a, T b) {
             if (Bool)
                 return a;
@@ -209,9 +234,11 @@ namespace UnityCommons {
         public static T Element<T>(params T[] items) {
             return ListItem(items);
         }
+
         #endregion
 
         #region Vector Ranges
+
         public static float Range(Vector2 range) {
             return Range(range.x, range.y);
         }
@@ -223,9 +250,11 @@ namespace UnityCommons {
         public static int RangeInclusive(Vector2Int range) {
             return RangeInclusive(range.x, range.y);
         }
+
         #endregion
 
         #region Utilities
+
         public static float Gaussian(float centerX = 0.0f, float widthFactor = 1f) {
             return Mathf.Sqrt(-2f * Mathf.Log(Float)) * Mathf.Sin(twoPi * Float) * widthFactor + centerX;
         }
@@ -257,6 +286,7 @@ namespace UnityCommons {
             while (stateStack.Any())
                 PopState();
         }
+
         #endregion
     }
 
