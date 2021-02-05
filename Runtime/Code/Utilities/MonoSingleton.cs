@@ -1,6 +1,10 @@
 using UnityEngine;
 
 namespace UnityCommons {
+	/// <summary>
+	/// Creates a MonoBehaviour singleton of type <typeparamref name="T"/>. Ensures that only a single instance exists.
+	/// </summary>
+	/// <typeparam name="T">Component type</typeparam>
 	public abstract class MonoSingleton<T> : MonoBehaviour where T : Component {
 		private static T instance;
 		public static T Instance {
