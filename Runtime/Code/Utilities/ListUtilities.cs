@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace UnityCommons {
-	public static class ListUtils {
+	public static class ListUtilities {
 		/// <summary>
 		/// Combines <paramref name="lists"/> into a single list
 		/// </summary>
