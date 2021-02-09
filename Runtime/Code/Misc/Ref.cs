@@ -1,6 +1,10 @@
 using System;
 
 namespace UnityCommons {
+    /// <summary>
+    /// Creates a reference object to a struct type
+    /// </summary>
+    /// <typeparam name="T">Type of object</typeparam>
     public class Ref<T> : IEquatable<T>, IEquatable<Ref<T>> where T : struct {
         private T value;
         private Func<T> getValue = null;

@@ -8,7 +8,6 @@ namespace UnityCommons {
         private static readonly RNGProvider provider = new RNGProvider();
         private static readonly Stack<ulong> stateStack = new Stack<ulong>();
         private static uint iterations;
-        public static int Sign = Bool ? 1 : -1;
         private const float pi = 3.1415926535897932384626433832795028841971693993751058209749445923f;
         private const float twoPi = 6.2831853071795864769252867665590057683943387987502116419498891846f;
 
@@ -21,10 +20,30 @@ namespace UnityCommons {
             }
         }
 
+        /// <summary>
+        /// Returns a random float from 0 to 1 (both inclusive)
+        /// </summary>
         public static float Float => provider.GetFloat(iterations++);
+        
+        /// <summary>
+        /// Returns a random integer
+        /// </summary>
         public static int Int => provider.GetInt(iterations++);
+        
+        /// <summary>
+        /// Returns a random long
+        /// </summary>
         public static long Long => BitConverter.ToInt64(Bytes(8), 0);
+        
+        /// <summary>
+        /// Returns a random bool
+        /// </summary>
         public static bool Bool => Float < 0.5;
+        
+        /// <summary>
+        /// Returns a random sign. (Either 1 or -1)
+        /// </summary>
+        public static int Sign => Bool ? 1 : -1;
 
         private static ulong StateCompressed {
             get => provider.Seed | ((ulong) iterations << 32);
@@ -40,6 +59,9 @@ namespace UnityCommons {
 
         #region Lists
 
+        /// <summary>
+        /// Returns a random element from <paramref name="list"/>
+        /// </summary>
         public static T ListItem<T>(IList<T> list) {
             return list[Range(0, list.Count)];
         }
@@ -48,32 +70,64 @@ namespace UnityCommons {
 
         #region General
 
+        /// <summary>
+        /// Returns a random integer from <paramref name="min"/> (inclusive) to <paramref name="max"/> (exclusive)
+        /// </summary>
+        /// <param name="min">Minimum range (inclusive)</param>
+        /// <param name="max">Maximum range (exclusive)</param>
+        /// <returns>A random integer from <paramref name="min"/> (inclusive) to <paramref name="max"/> (exclusive)</returns>
         public static int Range(int min, int max) {
             if (max <= min)
                 return min;
             return min + Mathf.Abs(Int % (max - min));
         }
-
+        /// <summary>
+        /// Returns a random integer from 0 (inclusive) to <paramref name="max"/> (exclusive)
+        /// </summary>
+        /// <param name="max">Maximum range (exclusive)</param>
+        /// <returns>A random integer from 0 (inclusive) to <paramref name="max"/> (exclusive)</returns>
         public static int Range(int max) {
             return Range(0, max);
         }
 
+        /// <summary>
+        /// Returns a random integer from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive)
+        /// </summary>
+        /// <param name="min">Minimum range (inclusive)</param>
+        /// <param name="max">Maximum range (inclusive)</param>
+        /// <returns>A random integer from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive)</returns>
         public static int RangeInclusive(int min, int max) {
             if (max <= min)
                 return min;
             return Range(min, max + 1);
         }
 
+        /// <summary>
+        /// Returns a random float from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive)
+        /// </summary>
+        /// <param name="min">Minimum range (inclusive)</param>
+        /// <param name="max">Maximum range (inclusive)</param>
+        /// <returns>A random float from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive)</returns>
         public static float Range(float min, float max) {
             if (max <= (double) min)
                 return min;
             return Float * (max - min) + min;
         }
 
+        /// <summary>
+        /// Returns a random float from 0 (inclusive) to <paramref name="max"/> (inclusive)
+        /// </summary>
+        /// <param name="max">Maximum range (inclusive)</param>
+        /// <returns>A random float from 0 (inclusive) to <paramref name="max"/> (inclusive)</returns>
         public static float Range(float max) {
             return Range(0f, max);
         }
 
+        /// <summary>
+        /// Returns true if a random chance occurs, false otherwise
+        /// </summary>
+        /// <param name="chance">The chance (between 0 and 1)</param>
+        /// <returns>true if a random chance occurs, false otherwise</returns>
         public static bool Chance(float chance) {
             if (chance <= 0.0)
                 return false;
@@ -82,6 +136,11 @@ namespace UnityCommons {
             return Float < (double) chance;
         }
 
+        /// <summary>
+        /// Returns an array of <paramref name="count"/> random bytes
+        /// </summary>
+        /// <param name="count">The number of bytes to generate</param>
+        /// <returns>An array of <paramref name="count"/> random bytes</returns>
         public static byte[] Bytes(int count) {
             var buffer = new byte[count];
             for (var i = 0; i < buffer.Length; i++) {
@@ -93,11 +152,20 @@ namespace UnityCommons {
         #endregion
 
         #region Geometric
-
+        
+        /// <summary>
+        /// Returns a random unit vector
+        /// </summary>
         public static Vector3 UnitVector3 => new Vector3(Gaussian(), Gaussian(), Gaussian()).normalized;
 
+        /// <summary>
+        /// Returns a random unit vector
+        /// </summary>
         public static Vector2 UnitVector2 => new Vector2(Gaussian(), Gaussian()).normalized;
 
+        /// <summary>
+        /// Returns a random point inside the unit circle
+        /// </summary>
         public static Vector2 InsideUnitCircle {
             get {
                 Vector2 vector;
@@ -109,6 +177,9 @@ namespace UnityCommons {
             }
         }
 
+        /// <summary>
+        /// Returns a random point inside the unit circle
+        /// </summary>
         public static Vector3 InsideUnitCircleVec3 {
             get {
                 var insideUnitCircle = InsideUnitCircle;
@@ -116,6 +187,9 @@ namespace UnityCommons {
             }
         }
 
+        /// <summary>
+        /// Returns a random point inside the unit sphere
+        /// </summary>
         public static Vector3 InsideUnitSphere {
             get {
                 Vector3 vector;
@@ -131,27 +205,13 @@ namespace UnityCommons {
 
         #region Seeded
 
-        public static bool ChanceSeeded(float chance, int seed) {
-            PushState(seed);
-            var flag = Chance(chance);
-            PopState();
-            return flag;
-        }
-
-        public static float FloatSeeded(int seed) {
-            PushState(seed);
-            var num = Float;
-            PopState();
-            return num;
-        }
-
-        public static float RangeSeeded(float min, float max, int seed) {
-            PushState(seed);
-            var num = Range(min, max);
-            PopState();
-            return num;
-        }
-
+        /// <summary>
+        /// Returns a random integer in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (exclusive) using <paramref name="seed"/> as a seed
+        /// </summary>
+        /// <param name="min">Minimum range (inclusive)</param>
+        /// <param name="max">Maximum range (exclusive)</param>
+        /// <param name="seed">Custom seed</param>
+        /// <returns>A random integer in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (exclusive) using <paramref name="seed"/> as a seed</returns>
         public static int RangeSeeded(int min, int max, int seed) {
             PushState(seed);
             var num = Range(min, max);
@@ -159,13 +219,65 @@ namespace UnityCommons {
             return num;
         }
 
+        /// <summary>
+        /// Returns a random integer in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive) using <paramref name="seed"/> as a seed
+        /// </summary>
+        /// <param name="min">Minimum range (inclusive)</param>
+        /// <param name="max">Maximum range (inclusive)</param>
+        /// <param name="seed">Custom seed</param>
+        /// <returns>A random integer in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive) using <paramref name="seed"/> as a seed</returns>
         public static int RangeInclusiveSeeded(int min, int max, int seed) {
             PushState(seed);
             var num = RangeInclusive(min, max);
             PopState();
             return num;
         }
+        
+        /// <summary>
+        /// Returns a random float in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive) using <paramref name="seed"/> as a seed
+        /// </summary>
+        /// <param name="min">Minimum range (inclusive)</param>
+        /// <param name="max">Maximum range (inclusive)</param>
+        /// <param name="seed">Custom seed</param>
+        /// <returns>A random float in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive) using <paramref name="seed"/> as a seed</returns>
+        public static float RangeSeeded(float min, float max, int seed) {
+            PushState(seed);
+            var num = Range(min, max);
+            PopState();
+            return num;
+        }
 
+        /// <summary>
+        /// Returns a random float from 0 to 1 (both inclusive) using <paramref name="seed"/> as a seed
+        /// </summary>
+        /// <param name="seed">Custom seed</param>
+        /// <returns>A random float from 0 to 1 (both inclusive) using <paramref name="seed"/> as a seed</returns>
+        public static float FloatSeeded(int seed) {
+            PushState(seed);
+            var num = Float;
+            PopState();
+            return num;
+        }
+
+        /// <summary>
+        /// Returns true if a random chance occurs using <paramref name="seed"/> as a seed, false otherwise
+        /// </summary>
+        /// <param name="chance">The chance (between 0 and 1)</param>
+        /// <param name="seed">Custom seed</param>
+        /// <returns>true if a random chance occurs using <paramref name="seed"/> as a seed, false otherwise</returns>
+        public static bool ChanceSeeded(float chance, int seed) {
+            PushState(seed);
+            var flag = Chance(chance);
+            PopState();
+            return flag;
+        }
+
+        /// <summary>
+        /// Returns an array of <paramref name="count"/> random bytes using <paramref name="seed"/> as a seed
+        /// </summary>
+        /// <param name="count">The number of bytes to generate</param>
+        /// <param name="seed">Custom seed</param>
+        /// <returns>An array of <paramref name="count"/> random bytes</returns>
         public static byte[] BytesSeeded(int count, int seed) {
             PushState(seed);
             var bytes = Bytes(count);
@@ -177,12 +289,18 @@ namespace UnityCommons {
 
         #region Element
 
+        /// <summary>
+        /// Returns either <paramref name="a"/> or <paramref name="b"/> randomly.
+        /// </summary>
         public static T Element<T>(T a, T b) {
             if (Bool)
                 return a;
             return b;
         }
 
+        /// <summary>
+        /// Returns either <paramref name="a"/>, <paramref name="b"/>, or <paramref name="c"/> randomly.
+        /// </summary>
         public static T Element<T>(T a, T b, T c) {
             var num = Float;
             if (num < 0.333330005407333)
@@ -192,6 +310,9 @@ namespace UnityCommons {
             return c;
         }
 
+        /// <summary>
+        /// Returns either <paramref name="a"/>, <paramref name="b"/>, <paramref name="c"/>, or <paramref name="d"/> randomly.
+        /// </summary>
         public static T Element<T>(T a, T b, T c, T d) {
             var num = Float;
             if (num < 0.25)
@@ -203,6 +324,9 @@ namespace UnityCommons {
             return d;
         }
 
+        /// <summary>
+        /// Returns either <paramref name="a"/>, <paramref name="b"/>, <paramref name="c"/>, <paramref name="d"/>, or <paramref name="e"/> randomly.
+        /// </summary>
         public static T Element<T>(T a, T b, T c, T d, T e) {
             var num = Float;
             if (num < 0.2f)
@@ -216,6 +340,9 @@ namespace UnityCommons {
             return e;
         }
 
+        /// <summary>
+        /// Returns either <paramref name="a"/>, <paramref name="b"/>, <paramref name="c"/>, <paramref name="d"/>, <paramref name="e"/>, or <paramref name="f"/> randomly.
+        /// </summary>
         public static T Element<T>(T a, T b, T c, T d, T e, T f) {
             var num = Float;
             if (num < 0.166659995913506)
@@ -231,6 +358,9 @@ namespace UnityCommons {
             return f;
         }
 
+        /// <summary>
+        /// Returns a random element from <paramref name="items"/>
+        /// </summary>
         public static T Element<T>(params T[] items) {
             return ListItem(items);
         }
@@ -239,14 +369,23 @@ namespace UnityCommons {
 
         #region Vector Ranges
 
+        /// <summary>
+        /// Returns a random float from <paramref name="range"/>.x to <paramref name="range"/>.y
+        /// </summary>
         public static float Range(Vector2 range) {
             return Range(range.x, range.y);
         }
 
+        /// <summary>
+        /// Returns a random integer from <paramref name="range"/>.x (inclusive) to <paramref name="range"/>.y (exclusive)
+        /// </summary>
         public static int Range(Vector2Int range) {
             return Range(range.x, range.y);
         }
 
+        /// <summary>
+        /// Returns a random integer from <paramref name="range"/>.x (inclusive) to <paramref name="range"/>.y (inclusive)
+        /// </summary>
         public static int RangeInclusive(Vector2Int range) {
             return RangeInclusive(range.x, range.y);
         }
@@ -270,6 +409,9 @@ namespace UnityCommons {
             stateStack.Push(StateCompressed);
         }
 
+        /// <summary>
+        /// Replaces the current seed with <paramref name="replacementSeed"/>. Use <see cref="PopState"/> to undo this operation and retrieve the original state
+        /// </summary>
         public static void PushState(int replacementSeed) {
             PushState();
             Seed = replacementSeed;
