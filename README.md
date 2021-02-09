@@ -1,7 +1,7 @@
 # Unity Commons
 <!--OpenUPM--><a href="https://openupm.com/packages/com.github.teodorvecerdi.unitycommons/"><img src="https://img.shields.io/npm/v/com.github.teodorvecerdi.unitycommons?label=openupm&amp;registry_uri=https://package.openupm.com" /></a>
 
-Common scripts or utilities I keep reimplementing for each project
+Library of project-agnostic, atomic, and reusable scripts.
 
 # Installing Unity Commons
 ## 1. using OpenUPM
