@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace UnityCommons {
-    public static class ListExtensions {
+    public static partial class Extensions {
         #region Misc
 
         /// <summary>
