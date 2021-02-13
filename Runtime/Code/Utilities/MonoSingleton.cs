@@ -1,11 +1,10 @@
-using UnityEngine;
-
 namespace UnityCommons {
 	/// <summary>
 	/// Creates a MonoBehaviour singleton of type <typeparamref name="T"/>. Ensures that only a single instance exists.
 	/// </summary>
 	/// <typeparam name="T">Component type</typeparam>
-	public abstract class MonoSingleton<T> : MonoBehaviour where T : Component {
+	public abstract class MonoSingleton<T> : UnityEngine.MonoBehaviour where T : UnityEngine.Component {
+		private static readonly System.Type type = typeof(T);
 		private static T instance;
 		public static T Instance {
 			get {
@@ -14,16 +13,13 @@ namespace UnityCommons {
 				if (instance != null) return instance;
 				
 				// Create an object if cannot find an already existing one.
-				var go = new GameObject($"MonoSingleton<{typeof(T).Name}>") { hideFlags = HideFlags.HideAndDontSave };
-				go.SetActive(true);
-				instance = go.AddComponent<T>();
-				return instance;
+				return instance = new UnityEngine.GameObject($"MonoSingleton<{type.Name}>", typeof(T)).GetComponent<T>();
 			}
 		}
 		
 		protected virtual void Awake() {
 			if (Instance != null && Instance != this) {
-				Debug.LogError($"Cannot have multiple instances of {typeof(T).Name}. Destroying excess instances.");
+				UnityEngine.Debug.LogError($"Cannot have multiple instances of {type.Name}. Destroying excess instances.");
 				Destroy(this);
 			}
 		}
