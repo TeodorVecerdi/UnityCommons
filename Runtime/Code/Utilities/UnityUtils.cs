@@ -47,6 +47,10 @@ namespace UnityCommons {
             return camera.ScreenToWorldPoint(screenPoint);
         }
 
+        /// <summary>
+        /// Creates a 3D text (TextMeshPro) object using the specified parameters.
+        /// </summary>
+        /// <returns>The 3D text instance</returns>
         public static TextMeshPro CreateWorldText(string text, Transform parent = null, Vector3 position = default, Quaternion? rotation = null, int fontSize = 32, Color? color = null,
                                                   HorizontalAlignmentOptions horizontalAlignment = HorizontalAlignmentOptions.Left,
                                                   VerticalAlignmentOptions verticalAlignment = VerticalAlignmentOptions.Top, int sortingOrder = 1000) {
@@ -54,6 +58,10 @@ namespace UnityCommons {
         }
 
 
+        /// <summary>
+        /// Creates a 3D text (TextMeshPro) object using the specified parameters.
+        /// </summary>
+        /// <returns>The 3D text instance</returns>
         public static TextMeshPro CreateWorldText(string text, Transform parent, Vector3 position, Quaternion rotation, int fontSize, Color color, HorizontalAlignmentOptions horizontalAlignment, VerticalAlignmentOptions verticalAlignment, int sortingOrder) {
             var textMesh = new GameObject("WorldText", typeof(TextMeshPro)).GetComponent<TextMeshPro>();
             textMesh.text = text;
