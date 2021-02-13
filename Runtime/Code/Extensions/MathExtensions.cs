@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 namespace UnityCommons {
-	public static class MathExtensions {
+	public static partial class Extensions {
 #region General Mapping
 
 		/// <summary>

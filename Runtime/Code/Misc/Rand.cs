@@ -8,8 +8,8 @@ namespace UnityCommons {
         private static readonly RNGProvider provider = new RNGProvider();
         private static readonly Stack<ulong> stateStack = new Stack<ulong>();
         private static uint iterations;
-        private const float pi = 3.1415926535897932384626433832795028841971693993751058209749445923f;
-        private const float twoPi = 6.2831853071795864769252867665590057683943387987502116419498891846f;
+        private const float pi = 3.1415926535897932f;
+        private const float twoPi = 6.2831853071795864f;
 
         public static int Seed {
             set {
