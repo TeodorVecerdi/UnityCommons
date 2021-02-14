@@ -41,39 +41,10 @@ namespace UnityCommons {
         /// <param name="fromTarget">Minimum target value</param>
         /// <param name="toTarget">Maximum target value</param>
         /// <returns><paramref name="value"/> mapped from range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>]</returns>
-        public static Vector2 Map(this Vector2 value, Vector2 fromSource, Vector2 toSource, Vector2 fromTarget, Vector2 toTarget) {
-            return new Vector2(value.x.Map(fromSource.x, toSource.x, fromTarget.x, toTarget.x),
-                               value.y.Map(fromSource.y, toSource.y, fromTarget.y, toTarget.y));
-        }
-
-        /// <summary>
-        /// Maps <paramref name="value"/> from the range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to the range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>].
-        /// </summary>
-        /// <param name="value">Value to map</param>
-        /// <param name="fromSource">Minimum source value</param>
-        /// <param name="toSource">Maximum source value</param>
-        /// <param name="fromTarget">Minimum target value</param>
-        /// <param name="toTarget">Maximum target value</param>
-        /// <returns><paramref name="value"/> mapped from range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>]</returns>
         public static Vector3 Map(this Vector3 value, float fromSource, float toSource, float fromTarget, float toTarget) {
             return new Vector3(value.x.Map(fromSource, toSource, fromTarget, toTarget),
                                value.y.Map(fromSource, toSource, fromTarget, toTarget),
                                value.z.Map(fromSource, toSource, fromTarget, toTarget));
-        }
-
-        /// <summary>
-        /// Maps <paramref name="value"/> from the range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to the range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>].
-        /// </summary>
-        /// <param name="value">Value to map</param>
-        /// <param name="fromSource">Minimum source value</param>
-        /// <param name="toSource">Maximum source value</param>
-        /// <param name="fromTarget">Minimum target value</param>
-        /// <param name="toTarget">Maximum target value</param>
-        /// <returns><paramref name="value"/> mapped from range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>]</returns>
-        public static Vector3 Map(this Vector3 value, Vector3 fromSource, Vector3 toSource, Vector3 fromTarget, Vector3 toTarget) {
-            return new Vector3(value.x.Map(fromSource.x, toSource.x, fromTarget.x, toTarget.x),
-                               value.y.Map(fromSource.y, toSource.y, fromTarget.y, toTarget.y),
-                               value.z.Map(fromSource.z, toSource.z, fromTarget.z, toTarget.z));
         }
 
         #endregion
