@@ -46,9 +46,13 @@ namespace UnityCommons {
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
-            var list = enumerable.ToList();
-            for (var index = 0; index < list.Count; index++) {
-                action(list[index]);
+            using (var enumerator = enumerable.GetEnumerator()) {
+                do {
+                    var current = enumerator.Current;
+                    if (current == null) return;
+
+                    action(current);
+                } while (enumerator.MoveNext());
             }
         }
 
@@ -70,7 +74,7 @@ namespace UnityCommons {
         /// <summary>
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
-        public static List<T> DeepCopyStruct<T>(this IEnumerable<T> source) where T : struct {
+        public static IList<T> DeepCopyStruct<T>(this IEnumerable<T> source) where T : struct {
             var list = new List<T>();
             foreach (var item in source) {
                 var copy = item;
@@ -83,35 +87,35 @@ namespace UnityCommons {
         /// <summary>
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
-        public static List<T> DeepCopyStructOrNull<T>(this IEnumerable<T> source) where T : struct {
+        public static IList<T> DeepCopyStructOrNull<T>(this IEnumerable<T> source) where T : struct {
             return source?.DeepCopyStruct();
         }
         
         /// <summary>
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
-        public static List<T> DeepCopyCloneable<T>(this IEnumerable<T> source) where T : ICloneable {
+        public static IList<T> DeepCopyCloneable<T>(this IEnumerable<T> source) where T : ICloneable {
             return source.Select(item => (T) item.Clone()).ToList();
         }
 
         /// <summary>
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
-        public static List<T> DeepCopyCloneableOrNull<T>(this IEnumerable<T> source) where T : ICloneable {
+        public static IList<T> DeepCopyCloneableOrNull<T>(this IEnumerable<T> source) where T : ICloneable {
             return source?.DeepCopyCloneable();
         }
 
         /// <summary>
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
-        public static List<T> ShallowCopy<T>(this IEnumerable<T> source) {
+        public static IList<T> ShallowCopy<T>(this IEnumerable<T> source) {
             return new List<T>(source);
         }
 
         /// <summary>
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
-        public static List<T> ShallowCopyOrNull<T>(this IEnumerable<T> source) {
+        public static IList<T> ShallowCopyOrNull<T>(this IEnumerable<T> source) {
             return source?.ShallowCopy();
         }
 
@@ -123,6 +127,8 @@ namespace UnityCommons {
         /// Removes duplicates from <paramref name="list"/>
         /// </summary>
         public static void RemoveDuplicatesReference<T>(this List<T> list) where T : class {
+            // Check if this `v` is faster than the current solution
+            // list = new HashSet<T>(list).ToList();
             if (list.Count <= 1)
                 return;
             for (var index1 = list.Count - 1; index1 >= 0; --index1)
@@ -286,6 +292,18 @@ namespace UnityCommons {
 
             QuickSort_Impl(list, startIndex, partitionIndex - 1, comparison);
             QuickSort_Impl(list, partitionIndex + 1, endIndex, comparison);
+            
+            
+            /* TODO!: Check if this is correct
+            */
+            /*while (true) {
+                if (startIndex >= endIndex) return;
+
+                var partitionIndex = QuickSort_Partition(list, startIndex, endIndex, comparison);
+
+                QuickSort_Impl(list, startIndex, partitionIndex - 1, comparison);
+                startIndex = partitionIndex + 1;
+            }*/
         }
 
         private static int QuickSort_Partition<T>(IList<T> list, int low, int high, Comparison<T> comparison) {
