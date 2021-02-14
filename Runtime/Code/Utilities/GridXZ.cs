@@ -13,7 +13,6 @@ namespace UnityCommons {
         private readonly TextMeshPro[,] debugText;
 
         public GridXZ(int width, int height, float cellSize, Vector3 gridOrigin = default, T startingValue = default, bool debug = false, DebugOptions? debugOptions = null) {
-            debugOptions ??= new DebugOptions();
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
@@ -28,16 +27,19 @@ namespace UnityCommons {
 
             if (!debug) return;
             
+            debugOptions ??= new DebugOptions();
             var rotation = Quaternion.Euler(90, 0, 0);
-            debugText = new TextMeshPro[width, height];
+            if(debugOptions.Value.ShowText)
+                debugText = new TextMeshPro[width, height];
             for (var x = 0; x < width; x++) {
                 for (var y = 0; y < height; y++) {
                     Debug.DrawLine(GetWorldCoordinates(x, y), GetWorldCoordinates(x, y + 1), Color.white, debugOptions.Value.LineDuration, false);
                     Debug.DrawLine(GetWorldCoordinates(x, y), GetWorldCoordinates(x + 1, y), Color.white, debugOptions.Value.LineDuration, false);
-
-                    debugText[x, y] = Utils.CreateWorldText(grid[x, y].ToString(), position: GetWorldCoordinates(x, y) + new Vector3(cellSize, cellSize) * 0.5f,
-                                                            fontSize: debugOptions.Value.FontSize, rotation: rotation, horizontalAlignment: HorizontalAlignmentOptions.Center,
-                                                            verticalAlignment: VerticalAlignmentOptions.Middle);
+                    
+                    if(debugOptions.Value.ShowText)
+                        debugText[x, y] = Utils.CreateWorldText(grid[x, y].ToString(), position: GetWorldCoordinates(x, y) + new Vector3(cellSize, cellSize) * 0.5f,
+                                                                fontSize: debugOptions.Value.FontSize, rotation: rotation, horizontalAlignment: HorizontalAlignmentOptions.Center,
+                                                                verticalAlignment: VerticalAlignmentOptions.Middle);
                 }
             }
 
@@ -69,6 +71,11 @@ namespace UnityCommons {
                     OnGridValueChanged?.Invoke((x, y, value));
                 }
             }
+        }
+        
+        public T this[Vector2Int gridPosition] {
+            get => this[gridPosition.x, gridPosition.y];
+            set => this[gridPosition.x, gridPosition.y] = value;
         }
 
         public T this[Vector3 worldPosition] {
