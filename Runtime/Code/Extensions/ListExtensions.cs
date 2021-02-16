@@ -47,12 +47,12 @@ namespace UnityCommons {
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
             using (var enumerator = enumerable.GetEnumerator()) {
-                do {
+                while (enumerator.MoveNext()) {
                     var current = enumerator.Current;
                     if (current == null) return;
 
                     action(current);
-                } while (enumerator.MoveNext());
+                }
             }
         }
 
