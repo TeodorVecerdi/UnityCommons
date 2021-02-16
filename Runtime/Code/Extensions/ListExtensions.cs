@@ -126,31 +126,8 @@ namespace UnityCommons {
         /// <summary>
         /// Removes duplicates from <paramref name="list"/>
         /// </summary>
-        public static void RemoveDuplicatesReference<T>(this List<T> list) where T : class {
-            // Check if this `v` is faster than the current solution
-            // list = new HashSet<T>(list).ToList();
-            if (list.Count <= 1)
-                return;
-            for (var index1 = list.Count - 1; index1 >= 0; --index1)
-            for (var index2 = 0; index2 < index1; ++index2)
-                if (list[index1] == list[index2]) {
-                    list.RemoveAt(index1);
-                    break;
-                }
-        }
-
-        /// <summary>
-        /// Removes duplicates from <paramref name="list"/>
-        /// </summary>
         public static void RemoveDuplicates<T>(this List<T> list) where T : IComparable<T> {
-            if (list.Count <= 1)
-                return;
-            for (var index1 = list.Count - 1; index1 >= 0; --index1)
-            for (var index2 = 0; index2 < index1; ++index2)
-                if (list[index1].CompareTo(list[index2]) == 0) {
-                    list.RemoveAt(index1);
-                    break;
-                }
+            RemoveDuplicates(list, (comparable, comparable1) => comparable.CompareTo(comparable1));
         }
 
         /// <summary>
@@ -166,7 +143,15 @@ namespace UnityCommons {
                     break;
                 }
         }
-
+        
+        /// <summary>
+        /// Removes duplicates from <paramref name="list"/>
+        /// </summary>
+        public static void RemoveDuplicates<T>(this IList<T> list) where T : IEquatable<T> {
+            if (list.Count <= 1) return;
+            list = list.Distinct().ToList();
+        }
+        
         #endregion
 
         #region Printing
@@ -285,25 +270,14 @@ namespace UnityCommons {
         #region private Utilities
 
         private static void QuickSort_Impl<T>(this IList<T> list, int startIndex, int endIndex, Comparison<T> comparison) {
-            if (startIndex >= endIndex)
-                return;
-
-            var partitionIndex = QuickSort_Partition(list, startIndex, endIndex, comparison);
-
-            QuickSort_Impl(list, startIndex, partitionIndex - 1, comparison);
-            QuickSort_Impl(list, partitionIndex + 1, endIndex, comparison);
-            
-            
-            /* TODO!: Check if this is correct
-            */
-            /*while (true) {
+            while (true) {
                 if (startIndex >= endIndex) return;
 
                 var partitionIndex = QuickSort_Partition(list, startIndex, endIndex, comparison);
 
                 QuickSort_Impl(list, startIndex, partitionIndex - 1, comparison);
                 startIndex = partitionIndex + 1;
-            }*/
+            }
         }
 
         private static int QuickSort_Partition<T>(IList<T> list, int low, int high, Comparison<T> comparison) {
