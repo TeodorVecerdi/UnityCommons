@@ -18,6 +18,7 @@ namespace UnityCommons {
 
         private class UpdateUtilityUpdater : MonoSingleton<UpdateUtilityUpdater> {
             public readonly List<Function> Functions = new List<Function>();
+            private readonly Queue<Function> removeQueue = new Queue<Function>();
 
             protected override void OnAwake() {
                 gameObject.hideFlags = HideFlags.HideAndDontSave;
@@ -27,10 +28,15 @@ namespace UnityCommons {
                 foreach (var function in Functions) {
                     function.action();
                 }
+
+                while (removeQueue.Count > 0) {
+                    var func = removeQueue.Dequeue();
+                    Functions.Remove(func);
+                }
             }
 
-            public void RemoveAction(Function function) {
-                Functions.Remove(function);
+            public void QueueFree(Function function) {
+                removeQueue.Enqueue(function);
             }
         }
 
@@ -47,7 +53,7 @@ namespace UnityCommons {
 
             public void Dispose() {
                 if (!disposed) {
-                    owner.RemoveAction(function);
+                    owner.QueueFree(function);
                     disposed = true;
                 }
             }
