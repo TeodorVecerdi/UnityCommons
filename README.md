@@ -1,5 +1,5 @@
 # Unity Commons
-<!--OpenUPM--><a href="https://openupm.com/packages/com.github.teodorvecerdi.unitycommons/"><img src="https://img.shields.io/npm/v/com.github.teodorvecerdi.unitycommons?label=openupm&amp;registry_uri=https://package.openupm.com" /></a>
+[![GitHub Repo stars](https://img.shields.io/github/stars/TeodorVecerdi/UnityCommons?label=Star%20on%20GitHub&style=social)](https://github.com/TeodorVecerdi/UnityCommons/stargazers) [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/TeodorVecerdi/UnityCommons?include_prereleases&label=Latest)](https://github.com/TeodorVecerdi/UnityCommons/releases)
 
 Library of project-agnostic, atomic, and reusable scripts.
 
