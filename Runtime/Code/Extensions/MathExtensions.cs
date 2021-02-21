@@ -57,7 +57,7 @@ namespace UnityCommons {
         /// <param name="value">The value to clamp</param>
         /// <returns><paramref name="value" /> clamped to the range [0, 1]</returns>
         public static float Clamped01(this float value) => Clamped(value, 0.0f, 1.0f);
-        
+
         /// <summary>
         /// Returns <paramref name="value" /> clamped to be in range [0, 1]
         /// </summary>
@@ -71,13 +71,49 @@ namespace UnityCommons {
         /// <param name="value">The value to clamp</param>
         /// <returns><paramref name="value" /> clamped to the range [0, 1]</returns>
         public static decimal Clamped01(this decimal value) => Clamped(value, 0.0m, 1.0m);
-        
+
         /// <summary>
         /// Returns <paramref name="value" /> clamped to be in range [0, 1]
         /// </summary>
         /// <param name="value">The value to clamp</param>
         /// <returns><paramref name="value" /> clamped to the range [0, 1]</returns>
         public static int Clamped01(this int value) => value <= 0 ? 0 : 1;
+
+        /// <summary>
+        /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
+        /// </summary>
+        public static float Wrapped(this float value, float min, float max) {
+            if (value < min)
+                return max - (min - value) % (max - min);
+            return min + (value - min) % (max - min);
+        }
+        
+        /// <summary>
+        /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
+        /// </summary>
+        public static double Wrapped(this double value, double min, double max) {
+            if (value < min)
+                return max - (min - value) % (max - min);
+            return min + (value - min) % (max - min);
+        }
+        
+        /// <summary>
+        /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
+        /// </summary>
+        public static decimal Wrapped(this decimal value, decimal min, decimal max) {
+            if (value < min)
+                return max - (min - value) % (max - min);
+            return min + (value - min) % (max - min);
+        }
+        
+        /// <summary>
+        /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
+        /// </summary>
+        public static int Wrapped(this int value, int min, int max) {
+            if (value < min)
+                return max - (min - value) % (max - min);
+            return min + (value - min) % (max - min);
+        }
 
         /// <summary>
         /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
@@ -99,7 +135,7 @@ namespace UnityCommons {
         /// <param name="n">The number to round to nearest multiple of</param>
         /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
         public static float RoundedTo(this float value, float n) => Mathf.Round(value / n) * n;
-        
+
         /// <summary>
         /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
         /// </summary>
@@ -107,7 +143,7 @@ namespace UnityCommons {
         /// <param name="n">The number to round to nearest multiple of</param>
         /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
         public static double RoundedTo(this double value, double n) => Math.Round(value / n, MidpointRounding.AwayFromZero) * n;
-        
+
         /// <summary>
         /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
         /// </summary>
