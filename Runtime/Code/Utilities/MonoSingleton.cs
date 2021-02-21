@@ -9,7 +9,14 @@ namespace UnityCommons {
 		public static T Instance {
 			get {
 				// Find first object of type T. Other instances are destroyed when Awake is called on them.
+				#if UNITY_2020_1_OR_NEWER
 				if (instance == null) instance = FindObjectOfType<T>(true);
+				#else
+				if (instance == null) {
+					var objects = UnityEngine.Resources.FindObjectsOfTypeAll<T>();
+					if (objects.Length > 0) instance = objects[0];
+				}
+				#endif
 				if (instance != null) return instance;
 
 				// Create an object if cannot find an already existing one.

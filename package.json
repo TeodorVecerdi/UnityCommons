@@ -4,7 +4,7 @@
   "displayName": "Unity Commons",
   "description": "Library of project-agnostic & reusable scripts.",
   "license": "MIT",
-  "unity": "2018.3",
+  "unity": "2019.4",
   "keywords": [
     "scripts",
     "library",
@@ -17,7 +17,6 @@
     "url": "https://github.com/TeodorVecerdi"
   },
   "dependencies": {
-    "com.unity.textmeshpro": "2.0.0",
     "com.dbrizov.naughtyattributes": "2.0.8"
   },
   "repository": {

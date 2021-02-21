@@ -27,7 +27,7 @@ namespace UnityCommons {
 
             if (!debug) return;
             
-            debugOptions ??= new DebugOptions();
+            if (debugOptions == null) debugOptions = new DebugOptions();
             var rotation = Quaternion.Euler(90, 0, 0);
             if(debugOptions.Value.ShowText)
                 debugText = new TextMeshPro[width, height];
