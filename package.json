@@ -17,7 +17,6 @@
     "url": "https://github.com/TeodorVecerdi"
   },
   "dependencies": {
-    "com.unity.textmeshpro": "2.0.0",
     "com.dbrizov.naughtyattributes": "2.0.8"
   },
   "repository": {
