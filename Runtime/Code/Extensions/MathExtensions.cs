@@ -78,7 +78,44 @@ namespace UnityCommons {
         /// <param name="value">The value to clamp</param>
         /// <returns><paramref name="value" /> clamped to the range [0, 1]</returns>
         public static int Clamped01(this int value) => value <= 0 ? 0 : 1;
+
+        /// <summary>
+        /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
+        /// </summary>
+        /// <param name="value">The value to round</param>
+        /// <param name="n">The number to round to nearest multiple of</param>
+        /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
+        public static int RoundedTo(this int value, int n) {
+            var remainder = value % n;
+            if (Math.Abs(remainder) < n / 2.0) return value - remainder;
+            if (value > 0) return value + (n - Math.Abs(remainder));
+            return value - (n - Math.Abs(remainder));
+        }
+
+        /// <summary>
+        /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
+        /// </summary>
+        /// <param name="value">The value to round</param>
+        /// <param name="n">The number to round to nearest multiple of</param>
+        /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
+        public static float RoundedTo(this float value, float n) => Mathf.Round(value / n) * n;
         
+        /// <summary>
+        /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
+        /// </summary>
+        /// <param name="value">The value to round</param>
+        /// <param name="n">The number to round to nearest multiple of</param>
+        /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
+        public static double RoundedTo(this double value, double n) => Math.Round(value / n, MidpointRounding.AwayFromZero) * n;
+        
+        /// <summary>
+        /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
+        /// </summary>
+        /// <param name="value">The value to round</param>
+        /// <param name="n">The number to round to nearest multiple of</param>
+        /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
+        public static decimal RoundedTo(this decimal value, decimal n) => Math.Round(value / n, MidpointRounding.AwayFromZero) * n;
+
         #endregion
 
         #region Generic Extensions
