@@ -8,6 +8,7 @@ namespace UnityCommons {
         /// Adds <paramref name="action"/> to the updater to be run every frame.
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling .Dispose() on it</returns>
+        [Obsolete("Use Run.EveryFrame instead")]
         public static IDisposable Create(Action action) {
             var function = new Function(action);
             UpdateUtilityUpdater.Instance.Functions.Add(function);
