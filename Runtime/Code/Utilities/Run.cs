@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using UnityEngine;
 
 namespace UnityCommons {
     public static class Run {
+        private static readonly List<Action> threadSafeActions = new List<Action>();
+        
         /// <summary>
         /// Runs <paramref name="action"/> every frame. <paramref name="updateType"/> determines whether
         /// <paramref name="action"/> is ran in the Update, LateUpdate, or FixedUpdate loop
@@ -46,13 +47,26 @@ namespace UnityCommons {
         public static IDisposable After(float delay, Action action) {
             return RunUtilityUpdater.Instance.After(action, delay);
         }
+        
+        /// <summary>
+        /// Runs <paramref name="action"/> once, in the next update loop.
+        /// </summary>
+        public static void Once(Action action) {
+            threadSafeActions.Add(action);
+        }
+        
+        // Force instance creation on load
+        [RuntimeInitializeOnLoadMethod]
+        private static void InitializeOnSceneLoad() {
+            _ = RunUtilityUpdater.Instance;
+        }
 
         private class RunUtilityUpdater : MonoSingleton<RunUtilityUpdater> {
             private readonly List<Function> functions = new List<Function>();
             private readonly Queue<Function> removeUpdate = new Queue<Function>();
             private readonly Queue<Function> removeLate = new Queue<Function>();
             private readonly Queue<Function> removeFixed = new Queue<Function>();
-            
+
             protected override void OnAwake() {
                 gameObject.hideFlags = HideFlags.HideAndDontSave;
             }
@@ -62,6 +76,11 @@ namespace UnityCommons {
                     if(function.updateType != UpdateType.Normal) continue;
                     function.action?.Invoke();
                 }
+                
+                foreach (var action in threadSafeActions) {
+                    action?.Invoke();
+                }
+                threadSafeActions.Clear();
 
                 while (removeUpdate.Count > 0) {
                     var func = removeUpdate.Dequeue();
