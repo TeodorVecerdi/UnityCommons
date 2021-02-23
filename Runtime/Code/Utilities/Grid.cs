@@ -5,18 +5,19 @@ namespace UnityCommons {
     public class Grid<T> {
         public event GridValueChangedEvent OnGridValueChanged;
 
-        private readonly int width;
-        private readonly int height;
-        private readonly float cellSize;
-        private readonly Vector3 gridOrigin;
+        public Vector3 GridOrigin { get; }
+        public int Width { get; }
+        public int Height { get; }
+        public float CellSize { get; }
+        
         private readonly T[,] grid;
         private readonly TextMeshPro[,] debugText;
 
         public Grid(int width, int height, float cellSize, Vector3 gridOrigin = default, T startingValue = default, bool debug = false, DebugOptions? debugOptions = null) {
-            this.width = width;
-            this.height = height;
-            this.cellSize = cellSize;
-            this.gridOrigin = gridOrigin;
+            Width = width;
+            Height = height;
+            CellSize = cellSize;
+            GridOrigin = gridOrigin;
 
             grid = new T[width, height];
             for (var x = 0; x < width; x++) {
@@ -49,24 +50,24 @@ namespace UnityCommons {
         }
 
         public Vector3 GetWorldCoordinates(int x, int y) {
-            return new Vector3(x, y) * cellSize + gridOrigin;
+            return new Vector3(x, y) * CellSize + GridOrigin;
         }
 
         public (int x, int y) GetGridCoordinates(Vector3 worldCoordinates) {
-            worldCoordinates -= gridOrigin;
-            return (Mathf.FloorToInt(worldCoordinates.x / cellSize), Mathf.FloorToInt(worldCoordinates.y / cellSize));
+            worldCoordinates -= GridOrigin;
+            return (Mathf.FloorToInt(worldCoordinates.x / CellSize), Mathf.FloorToInt(worldCoordinates.y / CellSize));
         }
 
         public T this[int x, int y] {
             get {
-                if (Utils.RangeCheck(x, width) && Utils.RangeCheck(y, height)) {
+                if (Utils.RangeCheck(x, Width) && Utils.RangeCheck(y, Height)) {
                     return grid[x, y];
                 }
 
                 return default;
             }
             set {
-                if (Utils.RangeCheck(x, width) && Utils.RangeCheck(y, height)) {
+                if (Utils.RangeCheck(x, Width) && Utils.RangeCheck(y, Height)) {
                     grid[x, y] = value;
                     OnGridValueChanged?.Invoke((x, y, value));
                 }
