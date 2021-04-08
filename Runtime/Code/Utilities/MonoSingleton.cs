@@ -28,6 +28,7 @@ namespace UnityCommons {
 			if (Instance != null && Instance != this) {
 				UnityEngine.Debug.LogError($"Cannot have multiple instances of {type.Name}. Destroying excess instances.");
 				Destroy(this);
+				return;
 			}
 			
 			OnAwake();
