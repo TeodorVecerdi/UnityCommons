@@ -1,7 +1,7 @@
 # Unity Commons
 [![GitHub Repo stars](https://img.shields.io/github/stars/TeodorVecerdi/UnityCommons?label=Star%20on%20GitHub&style=social)](https://github.com/TeodorVecerdi/UnityCommons/stargazers) [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/TeodorVecerdi/UnityCommons?include_prereleases&label=Latest)](https://github.com/TeodorVecerdi/UnityCommons/releases)
 
-Library of reusable scripts for the Unity game engine.
+Library of reusable Unity-related scripts.
 
 # Installing Unity Commons
 ## 1. using OpenUPM
