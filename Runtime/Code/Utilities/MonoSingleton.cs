@@ -20,7 +20,7 @@ namespace UnityCommons {
 				if (instance != null) return instance;
 
 				// Create an object if cannot find an already existing one.
-				return instance = new UnityEngine.GameObject($"MonoSingleton<{type.Name}>", typeof(T)).GetComponent<T>();
+				return instance = new UnityEngine.GameObject($"MonoSingleton<{type.Name}>", type).GetComponent<T>();
 			}
 		}
 		
