@@ -3,7 +3,7 @@ namespace UnityCommons {
 	/// Creates a MonoBehaviour singleton of type <typeparamref name="T"/>. Ensures that only a single instance exists.
 	/// </summary>
 	/// <typeparam name="T">Component type</typeparam>
-	public abstract class MonoSingleton<T> : UnityEngine.MonoBehaviour where T : UnityEngine.Component {
+	public abstract class MonoSingleton<T> : UnityEngine.MonoBehaviour where T : MonoSingleton<T> {
 		private static readonly System.Type type = typeof(T);
 		private static T instance;
 		public static T Instance {
@@ -20,7 +20,7 @@ namespace UnityCommons {
 				if (instance != null) return instance;
 
 				// Create an object if cannot find an already existing one.
-				return instance = new UnityEngine.GameObject($"MonoSingleton<{type.Name}>", typeof(T)).GetComponent<T>();
+				return instance = new UnityEngine.GameObject($"MonoSingleton<{type.Name}>", type).GetComponent<T>();
 			}
 		}
 		
