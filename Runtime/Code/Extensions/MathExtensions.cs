@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace UnityCommons {
     public static partial class Extensions {
         #region General Mapping
@@ -27,8 +24,8 @@ namespace UnityCommons {
         /// <param name="fromTarget">Minimum target value</param>
         /// <param name="toTarget">Maximum target value</param>
         /// <returns><paramref name="value"/> mapped from range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>]</returns>
-        public static Vector2 Map(this Vector2 value, float fromSource, float toSource, float fromTarget, float toTarget) {
-            return new Vector2(value.x.Map(fromSource, toSource, fromTarget, toTarget),
+        public static UnityEngine.Vector2 Map(this UnityEngine.Vector2 value, float fromSource, float toSource, float fromTarget, float toTarget) {
+            return new UnityEngine.Vector2(value.x.Map(fromSource, toSource, fromTarget, toTarget),
                                value.y.Map(fromSource, toSource, fromTarget, toTarget));
         }
 
@@ -41,8 +38,8 @@ namespace UnityCommons {
         /// <param name="fromTarget">Minimum target value</param>
         /// <param name="toTarget">Maximum target value</param>
         /// <returns><paramref name="value"/> mapped from range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>]</returns>
-        public static Vector3 Map(this Vector3 value, float fromSource, float toSource, float fromTarget, float toTarget) {
-            return new Vector3(value.x.Map(fromSource, toSource, fromTarget, toTarget),
+        public static UnityEngine.Vector3 Map(this UnityEngine.Vector3 value, float fromSource, float toSource, float fromTarget, float toTarget) {
+            return new UnityEngine.Vector3(value.x.Map(fromSource, toSource, fromTarget, toTarget),
                                value.y.Map(fromSource, toSource, fromTarget, toTarget),
                                value.z.Map(fromSource, toSource, fromTarget, toTarget));
         }
@@ -123,9 +120,9 @@ namespace UnityCommons {
         /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
         public static int RoundedTo(this int value, int n) {
             var remainder = value % n;
-            if (Math.Abs(remainder) < n / 2.0) return value - remainder;
-            if (value > 0) return value + (n - Math.Abs(remainder));
-            return value - (n - Math.Abs(remainder));
+            if (System.Math.Abs(remainder) < n / 2.0) return value - remainder;
+            if (value > 0) return value + (n - System.Math.Abs(remainder));
+            return value - (n - System.Math.Abs(remainder));
         }
 
         /// <summary>
@@ -134,7 +131,7 @@ namespace UnityCommons {
         /// <param name="value">The value to round</param>
         /// <param name="n">The number to round to nearest multiple of</param>
         /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
-        public static float RoundedTo(this float value, float n) => Mathf.Round(value / n) * n;
+        public static float RoundedTo(this float value, float n) => UnityEngine.Mathf.Round(value / n) * n;
 
         /// <summary>
         /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
@@ -142,7 +139,7 @@ namespace UnityCommons {
         /// <param name="value">The value to round</param>
         /// <param name="n">The number to round to nearest multiple of</param>
         /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
-        public static double RoundedTo(this double value, double n) => Math.Round(value / n, MidpointRounding.AwayFromZero) * n;
+        public static double RoundedTo(this double value, double n) => System.Math.Round(value / n, System.MidpointRounding.AwayFromZero) * n;
 
         /// <summary>
         /// Returns <paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/>
@@ -150,7 +147,7 @@ namespace UnityCommons {
         /// <param name="value">The value to round</param>
         /// <param name="n">The number to round to nearest multiple of</param>
         /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
-        public static decimal RoundedTo(this decimal value, decimal n) => Math.Round(value / n, MidpointRounding.AwayFromZero) * n;
+        public static decimal RoundedTo(this decimal value, decimal n) => System.Math.Round(value / n, System.MidpointRounding.AwayFromZero) * n;
 
         #endregion
 
@@ -172,8 +169,9 @@ namespace UnityCommons {
         /// <param name="value">The value to compare</param>
         /// <param name="a">The minimum value to compare against (inclusive)</param>
         /// <param name="b">The maximum value to compare against (inclusive)</param>
-        /// <returns><code>true</code> if <paramref name="value"/> is between <paramref name="a"/> (inclusive) and <paramref name="b"/> (inclusive), otherwise <code>false</code></returns>
-        public static bool Between<T>(this T value, T a, T b) where T : IComparable<T> => value.CompareTo(a) >= 0 && value.CompareTo(b) <= 0;
+        /// <typeparam name="T">Type that implements <see cref="System.IComparable{T}"/>IComparable</typeparam>
+        /// <returns><c>true</c> if <paramref name="value"/> is between <paramref name="a"/> (inclusive) and <paramref name="b"/> (inclusive), otherwise <c>false</c></returns>
+        public static bool Between<T>(this T value, T a, T b) where T : System.IComparable<T> => value.CompareTo(a) >= 0 && value.CompareTo(b) <= 0;
 
         #endregion
     }
