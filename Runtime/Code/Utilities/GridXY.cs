@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 
 namespace UnityCommons {
-    public class Grid<T> {
+    public class GridXY<T> {
         public event GridValueChangedEvent OnGridValueChanged;
 
         private readonly int width;
@@ -12,7 +12,7 @@ namespace UnityCommons {
         private readonly T[,] grid;
         private readonly TextMeshPro[,] debugText;
 
-        public Grid(int width, int height, float cellSize, Vector3 gridOrigin = default, T startingValue = default, bool debug = false, DebugOptions? debugOptions = null) {
+        public GridXY(int width, int height, float cellSize, Vector3 gridOrigin = default, T startingValue = default, bool debug = false, DebugOptions? debugOptions = null) {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
