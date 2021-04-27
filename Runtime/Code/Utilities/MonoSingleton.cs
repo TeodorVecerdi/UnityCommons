@@ -1,9 +1,10 @@
 namespace UnityCommons {
+    internal interface IMonoSingleton {}
 	/// <summary>
 	/// Creates a MonoBehaviour singleton of type <typeparamref name="T"/>. Ensures that only a single instance exists.
 	/// </summary>
 	/// <typeparam name="T">Component type</typeparam>
-	public abstract class MonoSingleton<T> : UnityEngine.MonoBehaviour where T : MonoSingleton<T> {
+    public abstract class MonoSingleton<T> : UnityEngine.MonoBehaviour, IMonoSingleton where T : MonoSingleton<T> {
 		private static readonly System.Type type = typeof(T);
 		private static T instance;
 		public static T Instance {
