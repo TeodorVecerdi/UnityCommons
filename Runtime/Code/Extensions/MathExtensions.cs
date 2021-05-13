@@ -161,7 +161,13 @@ namespace UnityCommons {
         /// <param name="max">The maximum value</param>
         /// <typeparam name="T">Type that implements IComparable</typeparam>
         /// <returns><paramref name="value" /> clamped to the range [<paramref name="min" />, <paramref name="max" />]</returns>
-        public static T Clamped<T>(this T value, T min, T max) where T : System.IComparable<T> => value.CompareTo(min) < 0 ? min : value.CompareTo(max) > 0 ? max : value;
+        public static T Clamped<T>(this T value, T min, T max) where T : System.IComparable<T> {
+            // swap is min is greater than max
+            if (min.CompareTo(max) > 0) {
+                (min, max) = (max, min);
+            }
+            return value.CompareTo(min) < 0 ? min : value.CompareTo(max) > 0 ? max : value;
+        }
 
         /// <summary>
         /// Returns <code>true</code> if <paramref name="value"/> is between <paramref name="a"/> (inclusive) and <paramref name="b"/> (inclusive), otherwise <code>false</code>.
