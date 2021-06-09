@@ -65,6 +65,13 @@ namespace UnityCommons {
         public static T ListItem<T>(IList<T> list) {
             return list[Range(0, list.Count)];
         }
+        
+        /// <summary>
+        /// Returns a random element from <paramref name="readOnlyList"/>
+        /// </summary>
+        public static T ReadOnlyListItem<T>(IReadOnlyList<T> readOnlyList) {
+            return readOnlyList[Range(0, readOnlyList.Count)];
+        }
 
         #endregion
 
