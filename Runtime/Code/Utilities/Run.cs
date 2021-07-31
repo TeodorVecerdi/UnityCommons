@@ -75,6 +75,7 @@ namespace UnityCommons {
             }
 
             private void Update() {
+                ClearQueue(removeUpdate);
                 foreach (var function in functions) {
                     if (function.updateType != UpdateType.Normal) continue;
                     if (function is TickFunction tickFunction) {
@@ -83,14 +84,11 @@ namespace UnityCommons {
 
                     function.action?.Invoke();
                 }
-
-                while (removeUpdate.Count > 0) {
-                    var func = removeUpdate.Dequeue();
-                    functions.Remove(func);
-                }
+                ClearQueue(removeUpdate);
             }
 
             private void LateUpdate() {
+                ClearQueue(removeLate);
                 foreach (var function in functions) {
                     if (function.updateType != UpdateType.Late) continue;
                     if (function is TickFunction tickFunction) {
@@ -99,14 +97,11 @@ namespace UnityCommons {
 
                     function.action?.Invoke();
                 }
-
-                while (removeLate.Count > 0) {
-                    var func = removeLate.Dequeue();
-                    functions.Remove(func);
-                }
+                ClearQueue(removeLate);
             }
 
             private void FixedUpdate() {
+                ClearQueue(removeFixed);
                 foreach (var function in functions) {
                     if (function.updateType != UpdateType.Fixed) continue;
                     if (function is TickFunction tickFunction) {
@@ -116,11 +111,7 @@ namespace UnityCommons {
 
                     function.action?.Invoke();
                 }
-
-                while (removeFixed.Count > 0) {
-                    var func = removeFixed.Dequeue();
-                    functions.Remove(func);
-                }
+                ClearQueue(removeFixed);
             }
 
             internal IDisposable EveryTicks(int ticks, Action action, UpdateType updateType) {
@@ -157,6 +148,13 @@ namespace UnityCommons {
                 yield return new WaitForSeconds(delay);
                 yield return null;
                 action?.Invoke();
+            }
+
+            internal void ClearQueue(Queue<Function> queue) {
+                while (queue.Count > 0) {
+                    var func = queue.Dequeue();
+                    functions.Remove(func);
+                }
             }
 
             internal void QueueFree(Function function) {
