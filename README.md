@@ -4,7 +4,13 @@
 Library of reusable Unity-related scripts.
 
 # Installing Unity Commons
-## 1. using OpenUPM
+## 1. as a git submodule (recommended)
+Run the following on the command line in your unity project's folder:
+
+```sh
+git submodule add https://github.com/TeodorVecerdi/UnityCommons.git Assets/UnityCommons
+```
+## 2. using OpenUPM
 **Requires [OpenUPM-CLI][openupm-cli]**  
 Run the following on the command line in your unity project's folder:
 
