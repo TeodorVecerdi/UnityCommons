@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace UnityCommons {
@@ -10,7 +11,7 @@ namespace UnityCommons {
         /// <paramref name="action"/> is ran in the Update, LateUpdate, or FixedUpdate loop
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
-        public static IDisposable EveryTicks(int ticks, UpdateType updateType, Action action) {
+        [MustUseReturnValue] public static IDisposable EveryTicks(int ticks, UpdateType updateType, Action action) {
             return RunUtilityUpdater.Instance.EveryTicks(ticks, action, updateType);
         }
 
@@ -18,7 +19,7 @@ namespace UnityCommons {
         /// Runs <paramref name="action"/> every <paramref name="ticks"/> updates/ticks.
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
-        public static IDisposable EveryTicks(int ticks, Action action) {
+        [MustUseReturnValue] public static IDisposable EveryTicks(int ticks, Action action) {
             return RunUtilityUpdater.Instance.EveryTicks(ticks, action, UpdateType.Normal);
         }
 
@@ -27,7 +28,7 @@ namespace UnityCommons {
         /// <paramref name="action"/> is ran in the Update, LateUpdate, or FixedUpdate loop
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
-        public static IDisposable EveryFrame(UpdateType updateType, Action action) {
+        [MustUseReturnValue] public static IDisposable EveryFrame(UpdateType updateType, Action action) {
             return RunUtilityUpdater.Instance.EveryFrame(action, updateType);
         }
 
@@ -35,7 +36,7 @@ namespace UnityCommons {
         /// Runs <paramref name="action"/> every Update loop (every frame).
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
-        public static IDisposable EveryFrame(Action action) {
+        [MustUseReturnValue] public static IDisposable EveryFrame(Action action) {
             return RunUtilityUpdater.Instance.EveryFrame(action, UpdateType.Normal);
         }
 
@@ -43,7 +44,7 @@ namespace UnityCommons {
         /// Runs <paramref name="action"/> every <paramref name="rate"/> seconds, with an initial delay of <value>0</value> seconds.
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling <code>.Dispose()</code> on it</returns>
-        public static IDisposable Every(float rate, Action action) {
+        [MustUseReturnValue] public static IDisposable Every(float rate, Action action) {
             return RunUtilityUpdater.Instance.Every(action, rate, 0);
         }
 
@@ -51,7 +52,7 @@ namespace UnityCommons {
         /// Runs <paramref name="action"/> every <paramref name="rate"/> seconds, with an initial delay of <paramref name="initialDelay"/> seconds.
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling <code>.Dispose()</code> on it</returns>
-        public static IDisposable Every(float rate, float initialDelay, Action action) {
+        [MustUseReturnValue] public static IDisposable Every(float rate, float initialDelay, Action action) {
             return RunUtilityUpdater.Instance.Every(action, rate, initialDelay);
         }
 
@@ -59,7 +60,7 @@ namespace UnityCommons {
         /// Runs <paramref name="action"/> after <paramref name="delay"/> seconds.
         /// </summary>
         /// <returns>An IDisposable which can be used to cancel the call of <paramref name="action"/> by calling <code>.Dispose()</code> on it</returns>
-        public static IDisposable After(float delay, Action action) {
+        [MustUseReturnValue] public static IDisposable After(float delay, Action action) {
             return RunUtilityUpdater.Instance.After(action, delay);
         }
 
