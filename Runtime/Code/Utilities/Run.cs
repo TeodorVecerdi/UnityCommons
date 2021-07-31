@@ -6,10 +6,27 @@ using UnityEngine;
 namespace UnityCommons {
     public static class Run {
         /// <summary>
+        /// Runs <paramref name="action"/> every <paramref name="ticks"/> updates/ticks. <paramref name="updateType"/> determines whether
+        /// <paramref name="action"/> is ran in the Update, LateUpdate, or FixedUpdate loop
+        /// </summary>
+        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
+        public static IDisposable EveryTicks(int ticks, UpdateType updateType, Action action) {
+            return RunUtilityUpdater.Instance.EveryTicks(ticks, action, updateType);
+        }
+
+        /// <summary>
+        /// Runs <paramref name="action"/> every <paramref name="ticks"/> updates/ticks.
+        /// </summary>
+        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
+        public static IDisposable EveryTicks(int ticks, Action action) {
+            return RunUtilityUpdater.Instance.EveryTicks(ticks, action, UpdateType.Normal);
+        }
+
+        /// <summary>
         /// Runs <paramref name="action"/> every frame. <paramref name="updateType"/> determines whether
         /// <paramref name="action"/> is ran in the Update, LateUpdate, or FixedUpdate loop
         /// </summary>
-        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling .Dispose() on it</returns>
+        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
         public static IDisposable EveryFrame(UpdateType updateType, Action action) {
             return RunUtilityUpdater.Instance.EveryFrame(action, updateType);
         }
@@ -17,7 +34,7 @@ namespace UnityCommons {
         /// <summary>
         /// Runs <paramref name="action"/> every Update loop (every frame).
         /// </summary>
-        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling .Dispose() on it</returns>
+        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
         public static IDisposable EveryFrame(Action action) {
             return RunUtilityUpdater.Instance.EveryFrame(action, UpdateType.Normal);
         }
@@ -25,7 +42,7 @@ namespace UnityCommons {
         /// <summary>
         /// Runs <paramref name="action"/> every <paramref name="rate"/> seconds, with an initial delay of <value>0</value> seconds.
         /// </summary>
-        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling .Dispose() on it</returns>
+        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling <code>.Dispose()</code> on it</returns>
         public static IDisposable Every(float rate, Action action) {
             return RunUtilityUpdater.Instance.Every(action, rate, 0);
         }
@@ -33,7 +50,7 @@ namespace UnityCommons {
         /// <summary>
         /// Runs <paramref name="action"/> every <paramref name="rate"/> seconds, with an initial delay of <paramref name="initialDelay"/> seconds.
         /// </summary>
-        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling .Dispose() on it</returns>
+        /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling <code>.Dispose()</code> on it</returns>
         public static IDisposable Every(float rate, float initialDelay, Action action) {
             return RunUtilityUpdater.Instance.Every(action, rate, initialDelay);
         }
@@ -41,7 +58,7 @@ namespace UnityCommons {
         /// <summary>
         /// Runs <paramref name="action"/> after <paramref name="delay"/> seconds.
         /// </summary>
-        /// <returns>An IDisposable which can be used to cancel the call of <paramref name="action"/> by calling .Dispose() on it</returns>
+        /// <returns>An IDisposable which can be used to cancel the call of <paramref name="action"/> by calling <code>.Dispose()</code> on it</returns>
         public static IDisposable After(float delay, Action action) {
             return RunUtilityUpdater.Instance.After(action, delay);
         }
@@ -51,14 +68,18 @@ namespace UnityCommons {
             private readonly Queue<Function> removeUpdate = new Queue<Function>();
             private readonly Queue<Function> removeLate = new Queue<Function>();
             private readonly Queue<Function> removeFixed = new Queue<Function>();
-            
+
             protected override void OnAwake() {
                 gameObject.hideFlags = HideFlags.HideAndDontSave;
             }
 
             private void Update() {
                 foreach (var function in functions) {
-                    if(function.updateType != UpdateType.Normal) continue;
+                    if (function.updateType != UpdateType.Normal) continue;
+                    if (function is TickFunction tickFunction) {
+                        if (Time.frameCount % tickFunction.ticks != 0) continue;
+                    }
+
                     function.action?.Invoke();
                 }
 
@@ -70,7 +91,11 @@ namespace UnityCommons {
 
             private void LateUpdate() {
                 foreach (var function in functions) {
-                    if(function.updateType != UpdateType.Late) continue;
+                    if (function.updateType != UpdateType.Late) continue;
+                    if (function is TickFunction tickFunction) {
+                        if (Time.frameCount % tickFunction.ticks != 0) continue;
+                    }
+
                     function.action?.Invoke();
                 }
 
@@ -82,7 +107,12 @@ namespace UnityCommons {
 
             private void FixedUpdate() {
                 foreach (var function in functions) {
-                    if(function.updateType != UpdateType.Fixed) continue;
+                    if (function.updateType != UpdateType.Fixed) continue;
+                    if (function is TickFunction tickFunction) {
+                        var fixedFrameCount = Mathf.RoundToInt(Time.fixedTime / Time.fixedDeltaTime);
+                        if (fixedFrameCount % tickFunction.ticks != 0) continue;
+                    }
+
                     function.action?.Invoke();
                 }
 
@@ -92,17 +122,23 @@ namespace UnityCommons {
                 }
             }
 
-            public IDisposable EveryFrame(Action action, UpdateType updateType) {
+            internal IDisposable EveryTicks(int ticks, Action action, UpdateType updateType) {
+                var function = new TickFunction(ticks, action, updateType);
+                functions.Add(function);
+                return new FunctionDisposable(this, function);
+            }
+
+            internal IDisposable EveryFrame(Action action, UpdateType updateType) {
                 var function = new Function(action, updateType);
                 functions.Add(function);
                 return new FunctionDisposable(this, function);
             }
 
-            public IDisposable Every(Action action, float rate, float initialDelay) {
+            internal IDisposable Every(Action action, float rate, float initialDelay) {
                 return new CoroutineDisposable(this, StartCoroutine(Runner(action, rate, initialDelay)));
             }
-            
-            public IDisposable After(Action action, float delay) {
+
+            internal IDisposable After(Action action, float delay) {
                 return new CoroutineDisposable(this, StartCoroutine(Delayer(action, delay)));
             }
 
@@ -115,14 +151,14 @@ namespace UnityCommons {
                     yield return new WaitForSeconds(rate);
                 }
             }
-            
+
             private IEnumerator Delayer(Action action, float delay) {
                 yield return new WaitForSeconds(delay);
                 yield return null;
                 action?.Invoke();
             }
 
-            public void QueueFree(Function function) {
+            internal void QueueFree(Function function) {
                 switch (function.updateType) {
                     case UpdateType.Normal:
                         removeUpdate.Enqueue(function);
@@ -151,12 +187,12 @@ namespace UnityCommons {
 
             public void Dispose() {
                 if (disposed) return;
-                
+
                 owner.StopCoroutine(coroutine);
                 disposed = true;
             }
         }
-        
+
         private class FunctionDisposable : IDisposable {
             private readonly RunUtilityUpdater owner;
             private readonly Function function;
@@ -169,12 +205,12 @@ namespace UnityCommons {
 
             public void Dispose() {
                 if (disposed) return;
-                
+
                 owner.QueueFree(function);
                 disposed = true;
             }
         }
-        
+
         private class Function {
             // ReSharper disable once InconsistentNaming
             internal readonly Action action;
@@ -184,6 +220,15 @@ namespace UnityCommons {
             public Function(Action action, UpdateType updateType) {
                 this.action = action;
                 this.updateType = updateType;
+            }
+        }
+
+        private class TickFunction : Function {
+            // ReSharper disable once InconsistentNaming
+            internal readonly int ticks;
+
+            public TickFunction(int ticks, Action action, UpdateType updateType) : base(action, updateType) {
+                this.ticks = ticks;
             }
         }
 
