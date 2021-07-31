@@ -60,7 +60,7 @@ namespace UnityCommons {
         /// Runs <paramref name="action"/> after <paramref name="delay"/> seconds.
         /// </summary>
         /// <returns>An IDisposable which can be used to cancel the call of <paramref name="action"/> by calling <code>.Dispose()</code> on it</returns>
-        [MustUseReturnValue] public static IDisposable After(float delay, Action action) {
+        public static IDisposable After(float delay, Action action) {
             return RunUtilityUpdater.Instance.After(action, delay);
         }
 
