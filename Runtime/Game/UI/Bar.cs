@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,30 +25,30 @@ namespace UnityCommons {
 		public bool UseSecondaryFillImage = true;
 		public bool UseText = true;
 		[ShowIf("UseText"),
-		 ValidateInput("ValidateFormat", "Text Format is not valid. Make sure it contains at least the `%1` modifier.\n%1 = current value\n%2 = max value\n%1:N = `N` digits")]
+		 ValidateInput(nameof(ValidateFormat), "Text Format is not valid. Make sure it contains at least the `%1` modifier.\n%1 = current value\n%2 = max value\n%1:N = `N` digits")]
 		public string TextFormat = "%1 / %2";
 
-		[Foldout("Values")] public float MaxValue = 100f;
-		[Foldout("Values")] public float InitialValue = 100f;
-		[Foldout("Values"), Label("Animation Time - Duration (s)"), Space]
+		[FoldoutGroup("Values")] public float MaxValue = 100f;
+		[FoldoutGroup("Values")] public float InitialValue = 100f;
+		[FoldoutGroup("Values"), LabelText("Animation Time - Duration (s)"), Space]
 		public float AnimationTime = 1f;
-		[Foldout("Values"), Label("Animation Time - Type")]
+		[FoldoutGroup("Values"), LabelText("Animation Time - Type")]
 		public BarTimeType TimeType = BarTimeType.SecondsTotal;
 
-		[Foldout("Colors"), Label("Default - Main Bar")]
+		[FoldoutGroup("Colors"), LabelText("Default - Main Bar")]
 		public Color DefaultColor = new Color(0x32 / 255.0f, 0xD6 / 255.0f, 0x25 / 255.0f);
-		[Foldout("Colors"), Label("Positive Change - Main Bar")]
+		[FoldoutGroup("Colors"), LabelText("Positive Change - Main Bar")]
 		public Color PositiveChangeColorMain = new Color(0x32 / 255.0f, 0xD6 / 255.0f, 0x25 / 255.0f);
-		[Foldout("Colors"), Label("Positive Change - Secondary Bar")]
+		[FoldoutGroup("Colors"), LabelText("Positive Change - Secondary Bar")]
 		public Color PositiveChangeColorSecondary = new Color(0.87f, 0.95f, 0.94f);
-		[Foldout("Colors"), Label("Negative Change - Main Bar")]
+		[FoldoutGroup("Colors"), LabelText("Negative Change - Main Bar")]
 		public Color NegativeChangeColorMain = new Color(0.839f, 0.219f, 0.043f);
-		[Foldout("Colors"), Label("Negative Change - Secondary Bar")]
+		[FoldoutGroup("Colors"), LabelText("Negative Change - Secondary Bar")]
 		public Color NegativeChangeColorSecondary = new Color(0.87f, 0.95f, 0.94f);
 
-		[Foldout("Events")] public UnityEvent<float, float> OnValueChangedEvent;
-		[Foldout("Events")] public UnityEvent OnBarEmpty;
-		[Foldout("Events")] public UnityEvent OnBarFull;
+		[FoldoutGroup("Events")] public UnityEvent<float, float> OnValueChangedEvent;
+		[FoldoutGroup("Events")] public UnityEvent OnBarEmpty;
+		[FoldoutGroup("Events")] public UnityEvent OnBarFull;
 
 		private float value;
 
@@ -216,10 +216,8 @@ namespace UnityCommons {
 
 #region Private Utilities
 
-		[Validator]
-		private bool ValidateFormat() {
-			if (!TextFormat.Contains("%1")) return false;
-			return true;
+		private bool ValidateFormat(string format) {
+			return format.Contains("%1");
 		}
 
 		private string FormatText(float currentValue) {
