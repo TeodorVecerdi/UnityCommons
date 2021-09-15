@@ -195,11 +195,10 @@ namespace UnityCommons {
         /// <summary>
         /// Returns <paramref name="enumerable"/> sorted using a quicksort algorithm
         /// </summary>
-        public static IEnumerable<T> QuickSorted<T>(this IEnumerable<T> enumerable, Comparison<T> comparison) {
-            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+        public static List<T> QuickSorted<T>(this List<T> list, Comparison<T> comparison) {
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (comparison == null) throw new ArgumentNullException(nameof(comparison));
 
-            var list = enumerable.ToList();
             QuickSort_Impl(list, 0, list.Count - 1, comparison);
             return list;
         }
@@ -207,18 +206,17 @@ namespace UnityCommons {
         /// <summary>
         /// Returns <paramref name="enumerable"/> sorted using a quicksort algorithm
         /// </summary>
-        public static IEnumerable<T> QuickSorted<T>(this IEnumerable<T> enumerable) where T : IComparable<T> {
-            return QuickSorted(enumerable, (comparable, comparable1) => comparable.CompareTo(comparable1));
+        public static List<T> QuickSorted<T>(this List<T> list) where T : IComparable<T> {
+            return QuickSorted(list, (comparable, comparable1) => comparable.CompareTo(comparable1));
         }
 
         /// <summary>
         /// Returns <paramref name="enumerable"/> sorted using an insertion sorting algorithm
         /// </summary>
-        public static IEnumerable<T> InsertionSorted<T>(this IEnumerable<T> enumerable, Comparison<T> comparison) {
-            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+        public static List<T> InsertionSorted<T>(this List<T> list, Comparison<T> comparison) {
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (comparison == null) throw new ArgumentNullException(nameof(comparison));
 
-            var list = enumerable.ToList();
             InsertionSort(list, comparison);
             return list;
         }
@@ -226,8 +224,8 @@ namespace UnityCommons {
         /// <summary>
         /// Returns <paramref name="enumerable"/> sorted using an insertion sorting algorithm
         /// </summary>
-        public static IEnumerable<T> InsertionSorted<T>(this IEnumerable<T> enumerable) where T : IComparable<T> {
-            return InsertionSorted(enumerable, (comparable, comparable1) => comparable.CompareTo(comparable1));
+        public static List<T> InsertionSorted<T>(this List<T> list) where T : IComparable<T> {
+            return InsertionSorted(list, (comparable, comparable1) => comparable.CompareTo(comparable1));
         }
 
         /// <summary>
