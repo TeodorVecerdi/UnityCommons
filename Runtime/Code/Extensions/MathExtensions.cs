@@ -14,6 +14,19 @@ namespace UnityCommons {
         public static float Map(this float value, float fromSource, float toSource, float fromTarget, float toTarget) {
             return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
         }
+        
+        /// <summary>
+        /// Maps <paramref name="value"/> from the range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to the range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>].
+        /// </summary>
+        /// <param name="value">Value to map</param>
+        /// <param name="fromSource">Minimum source value</param>
+        /// <param name="toSource">Maximum source value</param>
+        /// <param name="fromTarget">Minimum target value</param>
+        /// <param name="toTarget">Maximum target value</param>
+        /// <returns><paramref name="value"/> mapped from range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>]</returns>
+        public static int Map(this int value, int fromSource, int toSource, int fromTarget, int toTarget) {
+            return (int) (((float)value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget);
+        }
 
         /// <summary>
         /// Maps <paramref name="value"/> from the range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to the range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>].
