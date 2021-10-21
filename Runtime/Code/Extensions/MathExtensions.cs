@@ -183,6 +183,28 @@ namespace UnityCommons {
         }
 
         /// <summary>
+        /// Constrains <paramref name="value"/> to be at least <paramref name="min"/> 
+        /// </summary>
+        /// <param name="value">The value to constrain</param>
+        /// <param name="min">The minimum value</param>
+        /// <typeparam name="T">Type that implements IComparable</typeparam>
+        /// <returns><paramref name="min"/> if <paramref name="value"/> is less than <paramref name="min"/>, and <paramref name="value"/> otherwise</returns>
+        public static T Min<T>(this T value, T min) where T : System.IComparable<T> {
+            return value.CompareTo(min) < 0 ? min : value;
+        }
+        
+        /// <summary>
+        /// Constrains <paramref name="value"/> to be at most <paramref name="max"/> 
+        /// </summary>
+        /// <param name="value">The value to constrain</param>
+        /// <param name="max">The maximum value</param>
+        /// <typeparam name="T">Type that implements IComparable</typeparam>
+        /// <returns><paramref name="max"/> if <paramref name="value"/> is greater than <paramref name="max"/>, and <paramref name="value"/> otherwise</returns>
+        public static T Max<T>(this T value, T max) where T : System.IComparable<T> {
+            return value.CompareTo(max) > 0 ? max : value;
+        }
+
+        /// <summary>
         /// Returns <code>true</code> if <paramref name="value"/> is between <paramref name="a"/> (inclusive) and <paramref name="b"/> (inclusive), otherwise <code>false</code>.
         /// </summary>
         /// <param name="value">The value to compare</param>
