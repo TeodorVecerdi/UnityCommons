@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace UnityCommons {
 	/// <summary>
 	/// Creates a MonoBehaviour singleton of type <typeparamref name="T"/>. Ensures that only a single instance exists.
@@ -20,7 +22,8 @@ namespace UnityCommons {
 				if (instance != null) return instance;
 
 				// Create an object if cannot find an already existing one.
-				return instance = new UnityEngine.GameObject($"MonoSingleton<{type.Name}>", type).GetComponent<T>();
+				Debug.LogError($"MonoSingleton<{type.Name}> could not be found!");
+				return instance = null;
 			}
 		}
 		
