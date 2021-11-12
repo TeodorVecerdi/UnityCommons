@@ -8,7 +8,7 @@ namespace UnityCommons {
 	public abstract class MonoSingleton<T> : UnityEngine.MonoBehaviour where T : MonoSingleton<T> {
 		private static readonly System.Type type = typeof(T);
 		private static T instance;
-		public static bool IsInstanceNull => instance == null;
+		public static bool IsNull => instance == null;
 		public static T Instance {
 			get {
 				// Find first object of type T. Other instances are destroyed when Awake is called on them.
