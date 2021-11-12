@@ -22,7 +22,7 @@ namespace UnityCommons {
 				if (instance != null) return instance;
 
 				// Create an object if cannot find an already existing one.
-				Debug.LogError($"MonoSingleton<{type.Name}> could not be found!");
+				Debug.LogWarning($"MonoSingleton<{type.Name}> could not be found! It probably means that something is trying to access this from OnDestroy and the MonoSingleton instance was already destroyed.");
 				return instance = null;
 			}
 		}
