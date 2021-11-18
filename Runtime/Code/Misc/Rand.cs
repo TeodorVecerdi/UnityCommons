@@ -437,6 +437,32 @@ namespace UnityCommons {
         }
 
         #endregion
+        
+        #region Miscellaneous
+
+        /// <summary>
+        /// Generates a random color using an HSV range and alpha range.
+        /// </summary>
+        /// <param name="hueMin">Minimum hue [range 0..1]</param>
+        /// <param name="hueMax">Maximum hue [range 0..1]</param>
+        /// <param name="saturationMin">Minimum saturation [range 0..1]</param>
+        /// <param name="saturationMax">Maximum saturation [range 0..1]</param>
+        /// <param name="valueMin">Minimum value [range 0..1]</param>
+        /// <param name="valueMax">Maximum value [range 0..1]</param>
+        /// <param name="alphaMin">Minimum alpha [range 0..1]</param>
+        /// <param name="alphaMax">Maximum alpha [range 0..1]</param>
+        /// <returns>A random color with HSV and alpha values in input range</returns>
+        /// <footer>This is the same implementation as <see cref="UnityEngine.Random.ColorHSV()">UnityEngine.Random.ColorHSV()</see></footer>
+        public static Color ColorHSV(
+            float hueMin = 0.0f, float hueMax = 1.0f, float saturationMin = 0.0f, float saturationMax = 1.0f, 
+            float valueMin = 0.0f, float valueMax = 1.0f, float alphaMin = 1.0f, float alphaMax = 1.0f) 
+        {
+            Color color = Color.HSVToRGB(Range(hueMin, hueMax), Range(saturationMin, saturationMax), Range(valueMin, valueMax));
+            color.a = Range(alphaMin, alphaMax);
+            return color;
+        }
+
+        #endregion
     }
 
     internal class RNGProvider {
