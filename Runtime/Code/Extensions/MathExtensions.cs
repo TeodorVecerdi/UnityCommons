@@ -189,7 +189,7 @@ namespace UnityCommons {
         /// <param name="min">The minimum value</param>
         /// <typeparam name="T">Type that implements IComparable</typeparam>
         /// <returns><paramref name="min"/> if <paramref name="value"/> is less than <paramref name="min"/>, and <paramref name="value"/> otherwise</returns>
-        public static T Min<T>(this T value, T min) where T : System.IComparable<T> {
+        public static T MinClamped<T>(this T value, T min) where T : System.IComparable<T> {
             return value.CompareTo(min) < 0 ? min : value;
         }
         
@@ -200,7 +200,7 @@ namespace UnityCommons {
         /// <param name="max">The maximum value</param>
         /// <typeparam name="T">Type that implements IComparable</typeparam>
         /// <returns><paramref name="max"/> if <paramref name="value"/> is greater than <paramref name="max"/>, and <paramref name="value"/> otherwise</returns>
-        public static T Max<T>(this T value, T max) where T : System.IComparable<T> {
+        public static T MaxClamped<T>(this T value, T max) where T : System.IComparable<T> {
             return value.CompareTo(max) > 0 ? max : value;
         }
 
