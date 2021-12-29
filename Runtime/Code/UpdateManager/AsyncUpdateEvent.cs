@@ -7,7 +7,7 @@ namespace UnityCommons {
     public delegate Task AsyncUpdateDelegate();
 
     public sealed class AsyncUpdateEvent {
-        private readonly List<AsyncUpdateDelegate> delegates = new();
+        private readonly List<AsyncUpdateDelegate> delegates = new List<AsyncUpdateDelegate>();
 
         private AsyncUpdateEvent Add(AsyncUpdateDelegate @delegate) {
             if (@delegate == null) {

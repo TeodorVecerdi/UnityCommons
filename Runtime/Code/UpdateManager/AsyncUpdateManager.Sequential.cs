@@ -3,9 +3,9 @@
 namespace UnityCommons {
     public static partial class AsyncUpdateManager {
         public sealed class Sequential : MonoSingleton<Sequential> {
-            private readonly AsyncUpdateEvent onUpdate = new();
-            private readonly AsyncUpdateEvent onLateUpdate = new();
-            private readonly AsyncUpdateEvent onFixedUpdate = new();
+            private readonly AsyncUpdateEvent onUpdate = new AsyncUpdateEvent();
+            private readonly AsyncUpdateEvent onLateUpdate = new AsyncUpdateEvent();
+            private readonly AsyncUpdateEvent onFixedUpdate = new AsyncUpdateEvent();
 
             public AsyncUpdateEvent OnUpdate {
                 get => onUpdate;
