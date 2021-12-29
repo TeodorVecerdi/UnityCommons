@@ -5,10 +5,11 @@ namespace UnityCommons {
 	/// Creates a MonoBehaviour singleton of type <typeparamref name="T"/>. Ensures that only a single instance exists.
 	/// </summary>
 	/// <typeparam name="T">Component type</typeparam>
-	public abstract class MonoSingleton<T> : UnityEngine.MonoBehaviour where T : MonoSingleton<T> {
+	public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T> {
 		private static readonly System.Type type = typeof(T);
 		private static T instance;
-		public static bool IsNull => instance == null;
+		public static bool IsInitialized => instance != null;
+		
 		public static T Instance {
 			get {
 				// Find first object of type T. Other instances are destroyed when Awake is called on them.
@@ -23,14 +24,14 @@ namespace UnityCommons {
 				if (instance != null) return instance;
 
 				// Create an object if cannot find an already existing one.
-				Debug.LogWarning($"MonoSingleton<{type.Name}> could not be found! It probably means that something is trying to access this from OnDestroy and the MonoSingleton instance was already destroyed.");
+				Debug.LogWarning($"MonoSingleton<{type.Name}> could not be found!");
 				return instance = null;
 			}
 		}
 		
 		private void Awake() {
 			if (Instance != null && Instance != this) {
-				UnityEngine.Debug.LogError($"Cannot have multiple instances of {type.Name}. Destroying excess instances.");
+				Debug.LogError($"Cannot have multiple instances of {type.Name}. Destroying excess instances.");
 				Destroy(this);
 				return;
 			}
