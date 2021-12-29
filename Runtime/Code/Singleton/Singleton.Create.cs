@@ -1,4 +1,4 @@
-﻿namespace UnityCommons.Runtime {
+﻿namespace UnityCommons {
     public static partial class Singleton {
         public abstract class Create<T> where T : Create<T> {
             private static T instance;
