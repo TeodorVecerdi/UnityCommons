@@ -454,37 +454,42 @@ namespace UnityCommons {
         /// <returns>A random color with HSV and alpha values in input range</returns>
         /// <footer>This is the same implementation as <see cref="UnityEngine.Random.ColorHSV()">UnityEngine.Random.ColorHSV()</see></footer>
         public static Color ColorHSV(
-            float hueMin = 0.0f, float hueMax = 1.0f, float saturationMin = 0.0f, float saturationMax = 1.0f, 
-            float valueMin = 0.0f, float valueMax = 1.0f, float alphaMin = 1.0f, float alphaMax = 1.0f) 
-        {
-            Color color = Color.HSVToRGB(Range(hueMin, hueMax), Range(saturationMin, saturationMax), Range(valueMin, valueMax));
-            color.a = Range(alphaMin, alphaMax);
+            float hueMin = 0.0f, float hueMax = 1.0f, float saturationMin = 0.0f, float saturationMax = 1.0f,
+            float valueMin = 0.0f, float valueMax = 1.0f, float alphaMin = 1.0f, float alphaMax = 1.0f
+        ) {
+            Color color = Color.HSVToRGB(
+                Range(hueMin.Clamped01(), hueMax.Clamped01()),
+                Range(saturationMin.Clamped01(), saturationMax.Clamped01()),
+                Range(valueMin.Clamped01(), valueMax.Clamped01())
+            );
+            color.a = Range(alphaMin.Clamped01(), alphaMax.Clamped01());
             return color;
         }
 
         #endregion
-    }
+        
+        private class RNGProvider {
+            public uint Seed = (uint) DateTime.Now.GetHashCode();
 
-    internal class RNGProvider {
-        public uint Seed = (uint) DateTime.Now.GetHashCode();
+            public int GetInt(uint iterations) {
+                return (int) GetHash((int) iterations);
+            }
 
-        public int GetInt(uint iterations) {
-            return (int) GetHash((int) iterations);
+            public float GetFloat(uint iterations) {
+                return (float) ((GetInt(iterations) - (double) int.MinValue) / uint.MaxValue);
+            }
+
+            private uint GetHash(int buffer) {
+                var num1 = Rotate(Seed + 374761393U + 4U + (uint) (buffer * -1028477379), 17) * 668265263U;
+                var num2 = (num1 ^ (num1 >> 15)) * 2246822519U;
+                var num3 = (num2 ^ (num2 >> 13)) * 3266489917U;
+                return num3 ^ (num3 >> 16);
+            }
+
+            private static uint Rotate(uint value, int count) {
+                return (value << count) | (value >> (32 - count));
+            }
         }
 
-        public float GetFloat(uint iterations) {
-            return (float) ((GetInt(iterations) - (double) int.MinValue) / uint.MaxValue);
-        }
-
-        private uint GetHash(int buffer) {
-            var num1 = Rotate(Seed + 374761393U + 4U + (uint) (buffer * -1028477379), 17) * 668265263U;
-            var num2 = (num1 ^ (num1 >> 15)) * 2246822519U;
-            var num3 = (num2 ^ (num2 >> 13)) * 3266489917U;
-            return num3 ^ (num3 >> 16);
-        }
-
-        private static uint Rotate(uint value, int count) {
-            return (value << count) | (value >> (32 - count));
-        }
     }
 }
