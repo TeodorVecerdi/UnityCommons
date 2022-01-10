@@ -76,7 +76,7 @@ namespace UnityCommons {
 
             private void Update() {
                 ClearQueue(removeUpdate);
-                foreach (var function in functions) {
+                foreach (Function function in functions) {
                     if (function.updateType != UpdateType.Normal) continue;
                     if (function is TickFunction tickFunction) {
                         if (Time.frameCount % tickFunction.ticks != 0) continue;
@@ -89,7 +89,7 @@ namespace UnityCommons {
 
             private void LateUpdate() {
                 ClearQueue(removeLate);
-                foreach (var function in functions) {
+                foreach (Function function in functions) {
                     if (function.updateType != UpdateType.Late) continue;
                     if (function is TickFunction tickFunction) {
                         if (Time.frameCount % tickFunction.ticks != 0) continue;
@@ -102,10 +102,10 @@ namespace UnityCommons {
 
             private void FixedUpdate() {
                 ClearQueue(removeFixed);
-                foreach (var function in functions) {
+                foreach (Function function in functions) {
                     if (function.updateType != UpdateType.Fixed) continue;
                     if (function is TickFunction tickFunction) {
-                        var fixedFrameCount = Mathf.RoundToInt(Time.fixedTime / Time.fixedDeltaTime);
+                        int fixedFrameCount = Mathf.RoundToInt(Time.fixedTime / Time.fixedDeltaTime);
                         if (fixedFrameCount % tickFunction.ticks != 0) continue;
                     }
 
@@ -115,13 +115,13 @@ namespace UnityCommons {
             }
 
             internal IDisposable EveryTicks(int ticks, Action action, UpdateType updateType) {
-                var function = new TickFunction(ticks, action, updateType);
+                TickFunction function = new TickFunction(ticks, action, updateType);
                 functions.Add(function);
                 return new FunctionDisposable(this, function);
             }
 
             internal IDisposable EveryFrame(Action action, UpdateType updateType) {
-                var function = new Function(action, updateType);
+                Function function = new Function(action, updateType);
                 functions.Add(function);
                 return new FunctionDisposable(this, function);
             }
@@ -152,7 +152,7 @@ namespace UnityCommons {
 
             internal void ClearQueue(Queue<Function> queue) {
                 while (queue.Count > 0) {
-                    var func = queue.Dequeue();
+                    Function func = queue.Dequeue();
                     functions.Remove(func);
                 }
             }

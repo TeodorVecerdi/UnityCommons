@@ -8,7 +8,7 @@ namespace UnityCommons {
         /// using <value>Camera.main</value> as the active camera, with z = 0.
         /// </summary>
         public static Vector3 MouseWorld_NoZ() {
-            var world = MouseWorld();
+            Vector3 world = MouseWorld();
             world.z = 0;
             return world;
         }
@@ -18,7 +18,7 @@ namespace UnityCommons {
         /// using <value>Camera.main</value> as the active camera, with y = 0.
         /// </summary>
         public static Vector3 MouseWorld_NoY() {
-            var world = MouseWorld();
+            Vector3 world = MouseWorld();
             world.y = 0;
             return world;
         }
@@ -60,8 +60,8 @@ namespace UnityCommons {
         /// using <paramref name="camera"/> as the active camera.
         /// </summary>
         public static Vector3 ScreenToWorld(Vector3 screenPoint, Camera camera) {
-            var ray = camera.ScreenPointToRay(screenPoint);
-            return Physics.Raycast(ray, out var info, 10000f) ? info.point : Vector3.zero;
+            Ray ray = camera.ScreenPointToRay(screenPoint);
+            return Physics.Raycast(ray, out RaycastHit info, 10000f) ? info.point : Vector3.zero;
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace UnityCommons {
         /// as the active camera, and <paramref name="layerMask"/> as a layer mask.
         /// </summary>
         public static Vector3 ScreenToWorld(Vector3 screenPoint, Camera camera, int layerMask) {
-            var ray = camera.ScreenPointToRay(screenPoint);
-            return Physics.Raycast(ray, out var info, 10000f, layerMask) ? info.point : Vector3.zero;
+            Ray ray = camera.ScreenPointToRay(screenPoint);
+            return Physics.Raycast(ray, out RaycastHit info, 10000f, layerMask) ? info.point : Vector3.zero;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace UnityCommons {
         /// using <value>Camera.main</value> as the active camera.
         /// </summary>
         public static Vector3 MouseWorld2D_NoY() {
-            var position = MouseWorld2D();
+            Vector3 position = MouseWorld2D();
             position.y = 0;
             return position;
         }
@@ -88,7 +88,7 @@ namespace UnityCommons {
         /// using <value>Camera.main</value> as the active camera.
         /// </summary>
         public static Vector3 MouseWorld2D_NoZ() {
-            var position = MouseWorld2D();
+            Vector3 position = MouseWorld2D();
             position.z = 0;
             return position;
         }
@@ -142,7 +142,7 @@ namespace UnityCommons {
         /// <returns>The 3D text instance</returns>
         public static TextMeshPro CreateWorldText(string text, Transform parent, Vector3 position, Quaternion rotation, int fontSize, Color color,
                                                   HorizontalAlignmentOptions horizontalAlignment, VerticalAlignmentOptions verticalAlignment, int sortingOrder) {
-            var textMesh = new GameObject("WorldText", typeof(TextMeshPro)).GetComponent<TextMeshPro>();
+            TextMeshPro textMesh = new GameObject("WorldText", typeof(TextMeshPro)).GetComponent<TextMeshPro>();
             textMesh.text = text;
             textMesh.fontSize = fontSize;
             textMesh.color = color;

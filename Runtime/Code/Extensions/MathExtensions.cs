@@ -132,7 +132,7 @@ namespace UnityCommons {
         /// <param name="n">The number to round to nearest multiple of</param>
         /// <returns><paramref name="value"/> rounded to the nearest multiple of <paramref name="n"/></returns>
         public static int RoundedTo(this int value, int n) {
-            var remainder = value % n;
+            int remainder = value % n;
             if (System.Math.Abs(remainder) < n / 2.0) return value - remainder;
             if (value > 0) return value + (n - System.Math.Abs(remainder));
             return value - (n - System.Math.Abs(remainder));

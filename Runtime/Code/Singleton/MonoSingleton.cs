@@ -17,7 +17,7 @@ namespace UnityCommons {
 				if (instance == null) instance = FindObjectOfType<T>(true);
 				#else
 				if (instance == null) {
-					var objects = Resources.FindObjectsOfTypeAll<T>();
+					T[] objects = Resources.FindObjectsOfTypeAll<T>();
 					if (objects.Length > 0) instance = objects[0];
 				}
 				#endif

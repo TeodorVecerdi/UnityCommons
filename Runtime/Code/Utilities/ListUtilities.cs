@@ -7,8 +7,8 @@ namespace UnityCommons {
 		/// Combines <paramref name="lists"/> into a single list
 		/// </summary>
 		public static List<T> Combine<T>(params List<T>[] lists) {
-			var combined = new List<T>();
-			foreach (var list in lists) {
+			List<T> combined = new List<T>();
+			foreach (List<T> list in lists) {
 				combined.AddRange(list);
 			}
 

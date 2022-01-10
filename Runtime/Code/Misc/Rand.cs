@@ -149,8 +149,8 @@ namespace UnityCommons {
         /// <param name="count">The number of bytes to generate</param>
         /// <returns>An array of <paramref name="count"/> random bytes</returns>
         public static byte[] Bytes(int count) {
-            var buffer = new byte[count];
-            for (var i = 0; i < buffer.Length; i++) {
+            byte[] buffer = new byte[count];
+            for (int i = 0; i < buffer.Length; i++) {
                 buffer[i] = (byte) (Int % 256);
             }
             return buffer;
@@ -189,7 +189,7 @@ namespace UnityCommons {
         /// </summary>
         public static Vector3 InsideUnitCircleVec3 {
             get {
-                var insideUnitCircle = InsideUnitCircle;
+                Vector2 insideUnitCircle = InsideUnitCircle;
                 return new Vector3(insideUnitCircle.x, 0.0f, insideUnitCircle.y);
             }
         }
@@ -221,7 +221,7 @@ namespace UnityCommons {
         /// <returns>A random integer in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (exclusive) using <paramref name="seed"/> as a seed</returns>
         public static int RangeSeeded(int min, int max, int seed) {
             PushState(seed);
-            var num = Range(min, max);
+            int num = Range(min, max);
             PopState();
             return num;
         }
@@ -235,7 +235,7 @@ namespace UnityCommons {
         /// <returns>A random integer in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive) using <paramref name="seed"/> as a seed</returns>
         public static int RangeInclusiveSeeded(int min, int max, int seed) {
             PushState(seed);
-            var num = RangeInclusive(min, max);
+            int num = RangeInclusive(min, max);
             PopState();
             return num;
         }
@@ -249,7 +249,7 @@ namespace UnityCommons {
         /// <returns>A random float in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive) using <paramref name="seed"/> as a seed</returns>
         public static float RangeSeeded(float min, float max, int seed) {
             PushState(seed);
-            var num = Range(min, max);
+            float num = Range(min, max);
             PopState();
             return num;
         }
@@ -261,7 +261,7 @@ namespace UnityCommons {
         /// <returns>A random float from 0 to 1 (both inclusive) using <paramref name="seed"/> as a seed</returns>
         public static float FloatSeeded(int seed) {
             PushState(seed);
-            var num = Float;
+            float num = Float;
             PopState();
             return num;
         }
@@ -274,7 +274,7 @@ namespace UnityCommons {
         /// <returns>true if a random chance occurs using <paramref name="seed"/> as a seed, false otherwise</returns>
         public static bool ChanceSeeded(float chance, int seed) {
             PushState(seed);
-            var flag = Chance(chance);
+            bool flag = Chance(chance);
             PopState();
             return flag;
         }
@@ -287,7 +287,7 @@ namespace UnityCommons {
         /// <returns>An array of <paramref name="count"/> random bytes</returns>
         public static byte[] BytesSeeded(int count, int seed) {
             PushState(seed);
-            var bytes = Bytes(count);
+            byte[] bytes = Bytes(count);
             PopState();
             return bytes;
         }
@@ -309,7 +309,7 @@ namespace UnityCommons {
         /// Returns either <paramref name="a"/>, <paramref name="b"/>, or <paramref name="c"/> randomly.
         /// </summary>
         public static T Element<T>(T a, T b, T c) {
-            var num = Float;
+            float num = Float;
             if (num < 0.333330005407333)
                 return a;
             if (num < 0.666660010814667)
@@ -321,7 +321,7 @@ namespace UnityCommons {
         /// Returns either <paramref name="a"/>, <paramref name="b"/>, <paramref name="c"/>, or <paramref name="d"/> randomly.
         /// </summary>
         public static T Element<T>(T a, T b, T c, T d) {
-            var num = Float;
+            float num = Float;
             if (num < 0.25)
                 return a;
             if (num < 0.5)
@@ -335,7 +335,7 @@ namespace UnityCommons {
         /// Returns either <paramref name="a"/>, <paramref name="b"/>, <paramref name="c"/>, <paramref name="d"/>, or <paramref name="e"/> randomly.
         /// </summary>
         public static T Element<T>(T a, T b, T c, T d, T e) {
-            var num = Float;
+            float num = Float;
             if (num < 0.2f)
                 return a;
             if (num < 0.4f)
@@ -351,7 +351,7 @@ namespace UnityCommons {
         /// Returns either <paramref name="a"/>, <paramref name="b"/>, <paramref name="c"/>, <paramref name="d"/>, <paramref name="e"/>, or <paramref name="f"/> randomly.
         /// </summary>
         public static T Element<T>(T a, T b, T c, T d, T e, T f) {
-            var num = Float;
+            float num = Float;
             if (num < 0.166659995913506)
                 return a;
             if (num < 0.333330005407333)
@@ -406,7 +406,7 @@ namespace UnityCommons {
         }
 
         public static float GaussianAsymmetric(float centerX = 0.0f, float lowerWidthFactor = 1f, float upperWidthFactor = 1f) {
-            var num = Mathf.Sqrt(-2f * Mathf.Log(Float)) * Mathf.Sin(twoPi * Float);
+            float num = Mathf.Sqrt(-2f * Mathf.Log(Float)) * Mathf.Sin(twoPi * Float);
             if (num <= 0.0)
                 return num * lowerWidthFactor + centerX;
             return num * upperWidthFactor + centerX;
@@ -480,9 +480,9 @@ namespace UnityCommons {
             }
 
             private uint GetHash(int buffer) {
-                var num1 = Rotate(Seed + 374761393U + 4U + (uint) (buffer * -1028477379), 17) * 668265263U;
-                var num2 = (num1 ^ (num1 >> 15)) * 2246822519U;
-                var num3 = (num2 ^ (num2 >> 13)) * 3266489917U;
+                uint num1 = Rotate(Seed + 374761393U + 4U + (uint) (buffer * -1028477379), 17) * 668265263U;
+                uint num2 = (num1 ^ (num1 >> 15)) * 2246822519U;
+                uint num3 = (num2 ^ (num2 >> 13)) * 3266489917U;
                 return num3 ^ (num3 >> 16);
             }
 

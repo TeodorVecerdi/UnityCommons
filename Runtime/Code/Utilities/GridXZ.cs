@@ -19,8 +19,8 @@ namespace UnityCommons {
             this.gridOrigin = gridOrigin;
 
             grid = new T[width, height];
-            for (var x = 0; x < width; x++) {
-                for (var y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
                     grid[x, y] = startingValue;
                 }
             }
@@ -28,11 +28,11 @@ namespace UnityCommons {
             if (!debug) return;
             
             if (debugOptions == null) debugOptions = new DebugOptions();
-            var rotation = Quaternion.Euler(90, 0, 0);
+            Quaternion rotation = Quaternion.Euler(90, 0, 0);
             if(debugOptions.Value.ShowText)
                 debugText = new TextMeshPro[width, height];
-            for (var x = 0; x < width; x++) {
-                for (var y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
                     Debug.DrawLine(GetWorldCoordinates(x, y), GetWorldCoordinates(x, y + 1), Color.white, debugOptions.Value.LineDuration, false);
                     Debug.DrawLine(GetWorldCoordinates(x, y), GetWorldCoordinates(x + 1, y), Color.white, debugOptions.Value.LineDuration, false);
                     
@@ -80,11 +80,11 @@ namespace UnityCommons {
 
         public T this[Vector3 worldPosition] {
             get {
-                var (x, y) = GetGridCoordinates(worldPosition);
+                (int x, int y) = GetGridCoordinates(worldPosition);
                 return this[x, y];
             }
             set {
-                var (x, y) = GetGridCoordinates(worldPosition);
+                (int x, int y) = GetGridCoordinates(worldPosition);
                 this[x, y] = value;
             }
         }
@@ -103,7 +103,7 @@ namespace UnityCommons {
             }
 
             public static implicit operator GridValueChangedEventArgs((int x, int y, T value) tuple) {
-                var (x, y, value) = tuple;
+                (int x, int y, T value) = tuple;
                 return new GridValueChangedEventArgs(x, y, value);
             }
         }

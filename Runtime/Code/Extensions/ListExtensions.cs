@@ -29,11 +29,11 @@ namespace UnityCommons {
         /// Shuffles <paramref name="list"/>
         /// </summary>
         public static void Shuffle<T>(this IList<T> list) {
-            var count = list.Count;
+            int count = list.Count;
             while (count > 1) {
                 --count;
-                var index = Rand.RangeInclusive(0, count);
-                var obj = list[index];
+                int index = Rand.RangeInclusive(0, count);
+                T obj = list[index];
                 list[index] = list[count];
                 list[count] = obj;
             }
@@ -46,9 +46,9 @@ namespace UnityCommons {
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
-            using (var enumerator = enumerable.GetEnumerator()) {
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator()) {
                 while (enumerator.MoveNext()) {
-                    var current = enumerator.Current;
+                    T current = enumerator.Current;
                     if (current == null) return;
 
                     action(current);
@@ -63,8 +63,8 @@ namespace UnityCommons {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
-            foreach (var element in source) yield return element;
-            foreach (var element in enumerable) yield return element;
+            foreach (T element in source) yield return element;
+            foreach (T element in enumerable) yield return element;
         }
 
         #endregion
@@ -75,9 +75,9 @@ namespace UnityCommons {
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
         public static IList<T> DeepCopyStruct<T>(this IEnumerable<T> source) where T : struct {
-            var list = new List<T>();
-            foreach (var item in source) {
-                var copy = item;
+            List<T> list = new List<T>();
+            foreach (T item in source) {
+                T copy = item;
                 list.Add(copy);
             }
 
@@ -136,8 +136,8 @@ namespace UnityCommons {
         public static void RemoveDuplicates<T>(this List<T> list, Comparison<T> comparison) {
             if (list.Count <= 1)
                 return;
-            for (var index1 = list.Count - 1; index1 >= 0; --index1)
-            for (var index2 = 0; index2 < index1; ++index2)
+            for (int index1 = list.Count - 1; index1 >= 0; --index1)
+            for (int index2 = 0; index2 < index1; ++index2)
                 if (comparison(list[index1], list[index2]) == 0) {
                     list.RemoveAt(index1);
                     break;
@@ -178,7 +178,7 @@ namespace UnityCommons {
         /// Returns true if <paramref name="list"/> is sorted, false otherwise
         /// </summary>
         public static bool IsSorted<T>(this IList<T> list, Comparison<T> comparison) {
-            for (var i = 0; i < list.Count - 1; i++) {
+            for (int i = 0; i < list.Count - 1; i++) {
                 if (comparison(list[i], list[i + 1]) > 0) return false;
             }
 
@@ -246,9 +246,9 @@ namespace UnityCommons {
         /// Sorts <paramref name="list"/> using an insertion sorting algorithm
         /// </summary>
         public static void InsertionSort<T>(this IList<T> list, Comparison<T> comparison) {
-            var count = list.Count;
-            for (var index1 = 1; index1 < count; ++index1) {
-                var y = list[index1];
+            int count = list.Count;
+            for (int index1 = 1; index1 < count; ++index1) {
+                T y = list[index1];
                 int index2;
                 for (index2 = index1 - 1; index2 >= 0 && comparison(list[index2], y) > 0; --index2)
                     list[index2 + 1] = list[index2];
@@ -271,7 +271,7 @@ namespace UnityCommons {
             while (true) {
                 if (startIndex >= endIndex) return;
 
-                var partitionIndex = QuickSort_Partition(list, startIndex, endIndex, comparison);
+                int partitionIndex = QuickSort_Partition(list, startIndex, endIndex, comparison);
 
                 QuickSort_Impl(list, startIndex, partitionIndex - 1, comparison);
                 startIndex = partitionIndex + 1;
@@ -279,18 +279,18 @@ namespace UnityCommons {
         }
 
         private static int QuickSort_Partition<T>(IList<T> list, int low, int high, Comparison<T> comparison) {
-            var pivot = list[high];
-            var lowIndex = low - 1;
+            T pivot = list[high];
+            int lowIndex = low - 1;
 
-            for (var j = low; j < high; j++)
+            for (int j = low; j < high; j++)
                 if (comparison(list[j], pivot) <= 0) {
                     lowIndex++;
-                    var temp = list[lowIndex];
+                    T temp = list[lowIndex];
                     list[lowIndex] = list[j];
                     list[j] = temp;
                 }
 
-            var temp1 = list[lowIndex + 1];
+            T temp1 = list[lowIndex + 1];
             list[lowIndex + 1] = list[high];
             list[high] = temp1;
 
