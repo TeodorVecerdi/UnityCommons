@@ -10,6 +10,9 @@ namespace UnityCommons {
         private Queue<T> pool;
         private int size;
         private bool initialized;
+
+        public int PooledCount => pool.Count;
+        public int ReleasedCount => size - pool.Count;
         
         private void Awake() {
             pool = new Queue<T>();
