@@ -14,7 +14,7 @@ namespace UnityCommons {
             get {
                 // Find first object of type T. Other instances are destroyed when Awake is called on them.
 #if UNITY_2020_1_OR_NEWER
-				if (instance == null) instance = FindObjectOfType<T>(true);
+                if (instance == null) instance = FindObjectOfType<T>(true);
 #else
                 if (instance == null) {
                     T[] objects = Resources.FindObjectsOfTypeAll<T>();
