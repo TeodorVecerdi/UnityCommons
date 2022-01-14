@@ -84,7 +84,7 @@ namespace UnityCommons {
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             return value.GetHashCode();
         }
-        
+
         public static bool operator ==(Ref<T> left, Ref<T> right) {
             return Equals(left, right);
         }
@@ -92,7 +92,7 @@ namespace UnityCommons {
         public static bool operator !=(Ref<T> left, Ref<T> right) {
             return !Equals(left, right);
         }
-        
+
         public static bool operator ==(Ref<T> left, T right) {
             if (ReferenceEquals(null, left))
                 return false;
@@ -109,7 +109,7 @@ namespace UnityCommons {
         public override string ToString() {
             return $"Ref<{typeof(T).Name}>[{value}]";
         }
-        
+
         public static Ref<T> MakeRef(T initialValue, Func<T> getValue, Action setValue) {
             Ref<T> reference = new Ref<T>(initialValue);
             reference.Bind(getValue, setValue);
@@ -119,7 +119,7 @@ namespace UnityCommons {
         public static Ref<T> MakeRef(T initialValue) {
             return new Ref<T>(initialValue);
         }
-        
+
         public static Ref<T> MakeRef() {
             return new Ref<T>();
         }

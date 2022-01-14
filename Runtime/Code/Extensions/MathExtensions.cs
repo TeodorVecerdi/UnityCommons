@@ -14,7 +14,7 @@ namespace UnityCommons {
         public static float Map(this float value, float fromSource, float toSource, float fromTarget, float toTarget) {
             return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
         }
-        
+
         /// <summary>
         /// Maps <paramref name="value"/> from the range [<paramref name="fromSource"/>, <paramref name="toSource"/>] to the range [<paramref name="fromTarget"/>, <paramref name="toTarget"/>].
         /// </summary>
@@ -97,7 +97,7 @@ namespace UnityCommons {
                 return max - (min - value) % (max - min);
             return min + (value - min) % (max - min);
         }
-        
+
         /// <summary>
         /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
         /// </summary>
@@ -106,7 +106,7 @@ namespace UnityCommons {
                 return max - (min - value) % (max - min);
             return min + (value - min) % (max - min);
         }
-        
+
         /// <summary>
         /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
         /// </summary>
@@ -115,7 +115,7 @@ namespace UnityCommons {
                 return max - (min - value) % (max - min);
             return min + (value - min) % (max - min);
         }
-        
+
         /// <summary>
         /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
         /// </summary>
@@ -183,7 +183,7 @@ namespace UnityCommons {
         }
 
         /// <summary>
-        /// Constrains <paramref name="value"/> to be at least <paramref name="min"/> 
+        /// Constrains <paramref name="value"/> to be at least <paramref name="min"/>
         /// </summary>
         /// <param name="value">The value to constrain</param>
         /// <param name="min">The minimum value</param>
@@ -192,9 +192,9 @@ namespace UnityCommons {
         public static T MinClamped<T>(this T value, T min) where T : System.IComparable<T> {
             return value.CompareTo(min) < 0 ? min : value;
         }
-        
+
         /// <summary>
-        /// Constrains <paramref name="value"/> to be at most <paramref name="max"/> 
+        /// Constrains <paramref name="value"/> to be at most <paramref name="max"/>
         /// </summary>
         /// <param name="value">The value to constrain</param>
         /// <param name="max">The maximum value</param>

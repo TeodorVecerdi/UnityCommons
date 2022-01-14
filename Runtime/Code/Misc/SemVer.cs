@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnityCommons {
     /// <summary>
-    /// Represents a Semantic Versioning (or SemVer) data type. Contains <see cref="MAJOR"/>, <see cref="MINOR"/>, and <see cref="PATCH"/> members. 
+    /// Represents a Semantic Versioning (or SemVer) data type. Contains <see cref="MAJOR"/>, <see cref="MINOR"/>, and <see cref="PATCH"/> members.
     /// </summary>
     [System.Serializable]
     public struct SemVer : System.IEquatable<SemVer>, System.IComparable<SemVer> {
@@ -24,7 +24,7 @@ namespace UnityCommons {
                 this = Invalid;
                 return;
             }
-            
+
             MAJOR = major;
             MINOR = minor;
             PATCH = patch;

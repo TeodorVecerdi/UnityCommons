@@ -6,25 +6,25 @@ namespace UnityCommons {
         [Header("Pool Settings")]
         [SerializeField, Tooltip("The number of items initially allocated to the pool.")] private int initialPoolSize = 16;
         [SerializeField, Tooltip("Represents the factor by which the pool grows in size. For example, a growth factor of 2.0 means that the pool doubles in size once it runs out of elements")] private float growthFactor = 1.5f;
-        
+
         private Queue<T> pool;
         private int size;
         private bool initialized;
 
         public int PooledCount => pool.Count;
         public int ReleasedCount => size - pool.Count;
-        
+
         private void Awake() {
             pool = new Queue<T>();
             size = 0;
             initialized = false;
         }
-        
+
         /// <summary>
         /// Returns a new instance of type <typeparamref name="T"/>.
         /// </summary>
         protected abstract T CreatePooled();
-        
+
         /// <summary>
         /// Called when an item is requested from the pool.
         /// </summary>
@@ -36,7 +36,7 @@ namespace UnityCommons {
         /// </summary>
         protected virtual void OnReturn(T pooledItem) {
         }
-        
+
         /// <summary>
         /// Gets an item from the pool.
         /// </summary>
@@ -62,7 +62,7 @@ namespace UnityCommons {
             OnReturn(pooledItem);
             pool.Enqueue(pooledItem);
         }
-        
+
         private void Allocate(int amount) {
             size += amount;
             for (int i = 0; i < amount; i++) {

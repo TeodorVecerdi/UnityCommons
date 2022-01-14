@@ -11,21 +11,21 @@ namespace UnityCommons {
                 get => onUpdate;
                 set {
                     if (value != onUpdate) throw new InvalidOperationException("Cannot change OnUpdate event");
-                } 
+                }
             }
-        
+
             public AsyncUpdateEvent OnLateUpdate {
                 get => onLateUpdate;
                 set {
                     if (value != onLateUpdate) throw new InvalidOperationException("Cannot change OnLateUpdate event");
-                } 
+                }
             }
-        
+
             public AsyncUpdateEvent OnFixedUpdate {
                 get => onFixedUpdate;
                 set {
                     if (value != onFixedUpdate) throw new InvalidOperationException("Cannot change OnFixedUpdate event");
-                } 
+                }
             }
 
 
@@ -41,6 +41,6 @@ namespace UnityCommons {
                 await OnFixedUpdate.InvokeParallel();
             }
         }
-        
+
     }
 }

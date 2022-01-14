@@ -11,11 +11,11 @@ namespace UnityCommons {
         private void Update() {
             OnUpdate();
         }
-        
+
         private void LateUpdate() {
             OnLateUpdate();
         }
-        
+
         private void FixedUpdate() {
             OnFixedUpdate();
         }

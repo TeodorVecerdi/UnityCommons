@@ -13,7 +13,7 @@ namespace UnityCommons {
         public static void LogError(this object value) {
             Debug.LogError(value);
         }
-        
+
         public static void Log(this object value, Object context) {
             Debug.Log(value, context);
         }

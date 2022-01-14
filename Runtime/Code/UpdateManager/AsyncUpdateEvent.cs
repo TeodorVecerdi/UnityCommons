@@ -13,16 +13,16 @@ namespace UnityCommons {
             if (@delegate == null) {
                 throw new ArgumentNullException(nameof(@delegate));
             }
-            
+
             delegates.Add(@delegate);
             return this;
         }
-        
+
         private AsyncUpdateEvent Remove(AsyncUpdateDelegate @delegate) {
             if (@delegate == null) {
                 throw new ArgumentNullException(nameof(@delegate));
             }
-            
+
             delegates.Remove(@delegate);
             return this;
         }

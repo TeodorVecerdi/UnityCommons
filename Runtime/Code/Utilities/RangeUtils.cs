@@ -26,7 +26,7 @@ namespace UnityCommons {
         public static bool RangeCheck(int value, int maxValue) {
             return RangeCheck(value, 0, maxValue);
         }
-        
+
         /// <summary>
         ///     Returns <value>true</value>
         ///     if <paramref name="value" /> is between <value>0</value> (inclusive) and <paramref name="maxValue" /> (inclusive),
@@ -62,7 +62,7 @@ namespace UnityCommons {
         public static bool RangeCheck((int a, int b) value, (int a, int b) maxValue) {
             return RangeCheck(value.a, 0, maxValue.a) && RangeCheck(value.b, 0, maxValue.b);
         }
-        
+
         /// <summary>
         ///     Returns <value>true</value>
         ///     if <paramref name="value" />{x,y} is between <value>0</value>{x,y} (inclusive) and <paramref name="maxValue" />{x,y} (inclusive),

@@ -26,7 +26,7 @@ namespace UnityCommons {
             }
 
             if (!debug) return;
-            
+
             if (debugOptions == null) debugOptions = new DebugOptions();
             Quaternion rotation = Quaternion.Euler(90, 0, 0);
             if(debugOptions.Value.ShowText)
@@ -35,7 +35,7 @@ namespace UnityCommons {
                 for (int y = 0; y < height; y++) {
                     Debug.DrawLine(GetWorldCoordinates(x, y), GetWorldCoordinates(x, y + 1), Color.white, debugOptions.Value.LineDuration, false);
                     Debug.DrawLine(GetWorldCoordinates(x, y), GetWorldCoordinates(x + 1, y), Color.white, debugOptions.Value.LineDuration, false);
-                    
+
                     if(debugOptions.Value.ShowText)
                         debugText[x, y] = Utils.CreateWorldText(grid[x, y].ToString(), position: GetWorldCoordinates(x, y) + new Vector3(cellSize, cellSize) * 0.5f,
                                                                 fontSize: debugOptions.Value.FontSize, rotation: rotation, horizontalAlignment: HorizontalAlignmentOptions.Center,
@@ -72,7 +72,7 @@ namespace UnityCommons {
                 }
             }
         }
-        
+
         public T this[Vector2Int gridPosition] {
             get => this[gridPosition.x, gridPosition.y];
             set => this[gridPosition.x, gridPosition.y] = value;

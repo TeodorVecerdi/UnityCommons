@@ -90,7 +90,7 @@ namespace UnityCommons {
         public static IList<T> DeepCopyStructOrNull<T>(this IEnumerable<T> source) where T : struct {
             return source?.DeepCopyStruct();
         }
-        
+
         /// <summary>
         /// Returns a deep copy of <paramref name="source"/>
         /// </summary>
@@ -143,7 +143,7 @@ namespace UnityCommons {
                     break;
                 }
         }
-        
+
         /// <summary>
         /// Removes duplicates from <paramref name="list"/>
         /// </summary>
@@ -151,7 +151,7 @@ namespace UnityCommons {
             if (list.Count <= 1) return;
             list = list.Distinct().ToList();
         }
-        
+
         #endregion
 
         #region Printing

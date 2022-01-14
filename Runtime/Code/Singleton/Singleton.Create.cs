@@ -6,7 +6,7 @@
             public static bool IsInitialized => instance != null;
 
             protected abstract T CreateInstance();
-            
+
             private static T MakeInstance() {
                 return ((T)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(T))).CreateInstance();
             }

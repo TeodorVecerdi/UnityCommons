@@ -24,22 +24,22 @@ namespace UnityCommons {
         /// Returns a random float from 0 to 1 (both inclusive)
         /// </summary>
         public static float Float => provider.GetFloat(iterations++);
-        
+
         /// <summary>
         /// Returns a random integer
         /// </summary>
         public static int Int => provider.GetInt(iterations++);
-        
+
         /// <summary>
         /// Returns a random long
         /// </summary>
         public static long Long => BitConverter.ToInt64(Bytes(8), 0);
-        
+
         /// <summary>
         /// Returns a random bool
         /// </summary>
         public static bool Bool => Float < 0.5;
-        
+
         /// <summary>
         /// Returns a random sign. (Either 1 or -1)
         /// </summary>
@@ -65,7 +65,7 @@ namespace UnityCommons {
         public static T ListItem<T>(IList<T> list) {
             return list[Range(0, list.Count)];
         }
-        
+
         /// <summary>
         /// Returns a random element from <paramref name="readOnlyList"/>
         /// </summary>
@@ -159,7 +159,7 @@ namespace UnityCommons {
         #endregion
 
         #region Geometric
-        
+
         /// <summary>
         /// Returns a random unit vector
         /// </summary>
@@ -239,7 +239,7 @@ namespace UnityCommons {
             PopState();
             return num;
         }
-        
+
         /// <summary>
         /// Returns a random float in from <paramref name="min"/> (inclusive) to <paramref name="max"/> (inclusive) using <paramref name="seed"/> as a seed
         /// </summary>
@@ -437,7 +437,7 @@ namespace UnityCommons {
         }
 
         #endregion
-        
+
         #region Miscellaneous
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace UnityCommons {
         }
 
         #endregion
-        
+
         private class RNGProvider {
             public uint Seed = (uint) DateTime.Now.GetHashCode();
 
