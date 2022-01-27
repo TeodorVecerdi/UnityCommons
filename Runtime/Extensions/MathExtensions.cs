@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace UnityCommons {
     public static partial class Extensions {
         #region General Mapping
@@ -88,6 +90,26 @@ namespace UnityCommons {
         /// <param name="value">The value to clamp</param>
         /// <returns><paramref name="value" /> clamped to the range [0, 1]</returns>
         public static int Clamped01(this int value) => value <= 0 ? 0 : 1;
+
+        /// <summary>
+        /// Returns <paramref name="value" /> clamped to be in range [(0,0,0), (1,1,1)]
+        /// </summary>
+        /// <param name="value">The value to clamp</param>
+        /// <returns><paramref name="value" /> clamped to the range [(0,0,0), (1,1,1)]</returns>
+        public static Vector3 Clamped01(this Vector3 value) => value.Clamped(Vector3.zero, Vector3.one);
+
+        /// <summary>
+        /// Returns <paramref name="value" /> clamped to be in range [<paramref name="min" />, <paramref name="max" />]
+        /// </summary>
+        /// <param name="value">The value to clamp</param>
+        /// <param name="min">The minimum value</param>
+        /// <param name="max">The maximum value</param>
+        /// <returns><paramref name="value" /> clamped to the range [<paramref name="min" />, <paramref name="max" />]</returns>
+        public static Vector3 Clamped(this Vector3 value, Vector3 min, Vector3 max) {
+            return new Vector3(value.x.Clamped(min.x, max.x),
+                               value.y.Clamped(min.y, max.y),
+                               value.z.Clamped(min.z, max.z));
+        }
 
         /// <summary>
         /// Returns <paramref name="value"/> wrapped between the range <paramref name="min"/> and <paramref name="max"/>.
