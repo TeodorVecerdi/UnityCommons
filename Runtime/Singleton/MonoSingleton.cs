@@ -29,7 +29,13 @@ namespace UnityCommons {
         }
 
         private void Awake() {
-            if (Instance != null && Instance != this) {
+            if (!IsInitialized) {
+                instance = (T)this;
+                OnAwake();
+                return;
+            }
+
+            if (instance != (T)this) {
                 Debug.LogError($"Cannot have multiple instances of {type.Name}. Destroying excess instances.");
                 Destroy(this);
                 return;
