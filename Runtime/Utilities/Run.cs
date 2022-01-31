@@ -12,6 +12,7 @@ namespace UnityCommons {
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
         [MustUseReturnValue] public static IDisposable EveryTicks(int ticks, UpdateType updateType, Action action) {
+            Initialize();
             return RunUtilityUpdater.Instance.EveryTicks(ticks, action, updateType);
         }
 
@@ -20,6 +21,7 @@ namespace UnityCommons {
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
         [MustUseReturnValue] public static IDisposable EveryTicks(int ticks, Action action) {
+            Initialize();
             return RunUtilityUpdater.Instance.EveryTicks(ticks, action, UpdateType.Normal);
         }
 
@@ -29,6 +31,7 @@ namespace UnityCommons {
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
         [MustUseReturnValue] public static IDisposable EveryFrame(UpdateType updateType, Action action) {
+            Initialize();
             return RunUtilityUpdater.Instance.EveryFrame(action, updateType);
         }
 
@@ -37,6 +40,7 @@ namespace UnityCommons {
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from updating by calling <code>.Dispose()</code> on it</returns>
         [MustUseReturnValue] public static IDisposable EveryFrame(Action action) {
+            Initialize();
             return RunUtilityUpdater.Instance.EveryFrame(action, UpdateType.Normal);
         }
 
@@ -45,6 +49,7 @@ namespace UnityCommons {
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling <code>.Dispose()</code> on it</returns>
         [MustUseReturnValue] public static IDisposable Every(float rate, Action action) {
+            Initialize();
             return RunUtilityUpdater.Instance.Every(action, rate, 0);
         }
 
@@ -53,6 +58,7 @@ namespace UnityCommons {
         /// </summary>
         /// <returns>An IDisposable which can be used to remove <paramref name="action"/> from being run by calling <code>.Dispose()</code> on it</returns>
         [MustUseReturnValue] public static IDisposable Every(float rate, float initialDelay, Action action) {
+            Initialize();
             return RunUtilityUpdater.Instance.Every(action, rate, initialDelay);
         }
 
@@ -61,7 +67,16 @@ namespace UnityCommons {
         /// </summary>
         /// <returns>An IDisposable which can be used to cancel the call of <paramref name="action"/> by calling <code>.Dispose()</code> on it</returns>
         public static IDisposable After(float delay, Action action) {
+            Initialize();
             return RunUtilityUpdater.Instance.After(action, delay);
+        }
+
+        private static void Initialize() {
+            if (RunUtilityUpdater.IsInitialized) {
+                return;
+            }
+
+            RunUtilityUpdater instance = new GameObject("RunUtilityUpdater").AddComponent<RunUtilityUpdater>();
         }
 
         private class RunUtilityUpdater : MonoSingleton<RunUtilityUpdater> {
@@ -150,7 +165,7 @@ namespace UnityCommons {
                 action?.Invoke();
             }
 
-            internal void ClearQueue(Queue<Function> queue) {
+            private void ClearQueue(Queue<Function> queue) {
                 while (queue.Count > 0) {
                     Function func = queue.Dequeue();
                     functions.Remove(func);
