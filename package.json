@@ -1,6 +1,6 @@
 {
   "name": "com.github.teodorvecerdi.unitycommons",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "displayName": "Unity Commons",
   "description": "Library of project-agnostic & reusable scripts.",
   "license": "MIT",

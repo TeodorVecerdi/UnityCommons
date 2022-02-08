@@ -192,7 +192,7 @@ namespace UnityCommons {
                 action?.Invoke();
             }
 
-            internal void ClearQueue(Queue<Function> queue) {
+            private void ClearQueue(Queue<Function> queue) {
                 while (queue.Count > 0) {
                     Function func = queue.Dequeue();
                     functions.Remove(func);
