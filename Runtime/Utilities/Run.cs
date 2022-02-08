@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -57,6 +58,14 @@ namespace UnityCommons {
         }
 
         /// <summary>
+        /// Runs <paramref name="action"/> in the next frame. <paramref name="updateType"/> determines whether
+        /// <paramref name="action"/> is ran in the Update, LateUpdate, or FixedUpdate loop
+        /// </summary>
+        public static void NextFrame(Action action, UpdateType updateType = UpdateType.Normal) {
+            RunUtilityUpdater.Instance.NextFrame(action, updateType);
+        }
+
+        /// <summary>
         /// Runs <paramref name="action"/> after <paramref name="delay"/> seconds.
         /// </summary>
         /// <returns>An IDisposable which can be used to cancel the call of <paramref name="action"/> by calling <code>.Dispose()</code> on it</returns>
@@ -64,11 +73,17 @@ namespace UnityCommons {
             return RunUtilityUpdater.Instance.After(action, delay);
         }
 
-        private class RunUtilityUpdater : MonoSingleton<RunUtilityUpdater> {
+        public static void EnsureInitialized() {
+            RunUtilityUpdater.EnsureInitialized();
+        }
+
+        private class RunUtilityUpdater : AutoMonoSingleton<RunUtilityUpdater> {
             private readonly List<Function> functions = new List<Function>();
+            private readonly ConcurrentDictionary<int, Function> nextUpdateFunctions = new();
             private readonly Queue<Function> removeUpdate = new Queue<Function>();
             private readonly Queue<Function> removeLate = new Queue<Function>();
             private readonly Queue<Function> removeFixed = new Queue<Function>();
+            private readonly ConcurrentQueue<(int, Function)> removeNextUpdate = new();
 
             protected override void OnAwake() {
                 gameObject.hideFlags = HideFlags.HideAndDontSave;
@@ -85,6 +100,13 @@ namespace UnityCommons {
                     function.action?.Invoke();
                 }
                 ClearQueue(removeUpdate);
+
+                foreach ((int key, Function value) in nextUpdateFunctions) {
+                    if (value.updateType != UpdateType.Normal) continue;
+                    value.action?.Invoke();
+                    removeNextUpdate.Enqueue((key, value));
+                }
+                ClearQueue(removeNextUpdate);
             }
 
             private void LateUpdate() {
@@ -98,6 +120,13 @@ namespace UnityCommons {
                     function.action?.Invoke();
                 }
                 ClearQueue(removeLate);
+
+                foreach ((int key, Function value) in nextUpdateFunctions) {
+                    if (value.updateType != UpdateType.Late) continue;
+                    value.action?.Invoke();
+                    removeNextUpdate.Enqueue((key, value));
+                }
+                ClearQueue(removeNextUpdate);
             }
 
             private void FixedUpdate() {
@@ -112,6 +141,13 @@ namespace UnityCommons {
                     function.action?.Invoke();
                 }
                 ClearQueue(removeFixed);
+
+                foreach ((int key, Function value) in nextUpdateFunctions) {
+                    if (value.updateType != UpdateType.Fixed) continue;
+                    value.action?.Invoke();
+                    removeNextUpdate.Enqueue((key, value));
+                }
+                ClearQueue(removeNextUpdate);
             }
 
             internal IDisposable EveryTicks(int ticks, Action action, UpdateType updateType) {
@@ -134,6 +170,12 @@ namespace UnityCommons {
                 return new CoroutineDisposable(this, StartCoroutine(Delayer(action, delay)));
             }
 
+            internal void NextFrame(Action action, UpdateType updateType) {
+                if (!nextUpdateFunctions.TryAdd(nextUpdateFunctions.Count, new Function(action, updateType))) {
+                    Debug.LogWarning("Failed to add function to next update queue");
+                }
+            }
+
             private IEnumerator Runner(Action action, float rate, float initialDelay) {
                 yield return new WaitForSeconds(initialDelay);
 
@@ -154,6 +196,16 @@ namespace UnityCommons {
                 while (queue.Count > 0) {
                     Function func = queue.Dequeue();
                     functions.Remove(func);
+                }
+            }
+
+            internal void ClearQueue(ConcurrentQueue<(int, Function)> queue) {
+                while (queue.Count > 0) {
+                    if (queue.TryDequeue(out (int, Function) pair)) {
+                        if (!nextUpdateFunctions.TryRemove(pair.Item1, out _)) {
+                            Debug.LogWarning("Failed to remove function from next update queue");
+                        }
+                    }
                 }
             }
 
