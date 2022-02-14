@@ -11,7 +11,7 @@ Library of reusable Unity-related scripts.
 Run the following on the command line in your unity project's folder:
 
 ```sh
-git submodule add https://github.com/TeodorVecerdi/UnityCommons.git Assets/UnityCommons
+git submodule add https://github.com/TeodorVecerdi/UnityCommons.git Assets/Plugins/UnityCommons
 ```
 
 ## 2. using OpenUPM
@@ -20,7 +20,7 @@ git submodule add https://github.com/TeodorVecerdi/UnityCommons.git Assets/Unity
 Run the following on the command line in your unity project's folder:
 
 ```sh
-openupm add com.github.teodorvecerdi.unitycommons
+openupm add dev.vecerdi.unitycommons
 ```
 
 [openupm-cli]: https://openupm.com/docs/getting-started.html#installing-openupm-cli

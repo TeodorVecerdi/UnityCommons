@@ -79,11 +79,11 @@ namespace UnityCommons {
 
         private class RunUtilityUpdater : AutoMonoSingleton<RunUtilityUpdater> {
             private readonly List<Function> functions = new List<Function>();
-            private readonly ConcurrentDictionary<int, Function> nextUpdateFunctions = new();
+            private readonly ConcurrentDictionary<int, Function> nextUpdateFunctions = new ConcurrentDictionary<int, Function>();
             private readonly Queue<Function> removeUpdate = new Queue<Function>();
             private readonly Queue<Function> removeLate = new Queue<Function>();
             private readonly Queue<Function> removeFixed = new Queue<Function>();
-            private readonly ConcurrentQueue<(int, Function)> removeNextUpdate = new();
+            private readonly ConcurrentQueue<(int, Function)> removeNextUpdate = new ConcurrentQueue<(int, Function)>();
 
             protected override void OnAwake() {
                 gameObject.hideFlags = HideFlags.HideAndDontSave;
@@ -101,7 +101,8 @@ namespace UnityCommons {
                 }
                 ClearQueue(removeUpdate);
 
-                foreach ((int key, Function value) in nextUpdateFunctions) {
+                foreach (KeyValuePair<int, Function> kvp in nextUpdateFunctions) {
+                    (int key, Function value) = (kvp.Key, kvp.Value);
                     if (value.updateType != UpdateType.Normal) continue;
                     value.action?.Invoke();
                     removeNextUpdate.Enqueue((key, value));
@@ -121,7 +122,8 @@ namespace UnityCommons {
                 }
                 ClearQueue(removeLate);
 
-                foreach ((int key, Function value) in nextUpdateFunctions) {
+                foreach (KeyValuePair<int, Function> kvp in nextUpdateFunctions) {
+                    (int key, Function value) = (kvp.Key, kvp.Value);
                     if (value.updateType != UpdateType.Late) continue;
                     value.action?.Invoke();
                     removeNextUpdate.Enqueue((key, value));
@@ -142,7 +144,8 @@ namespace UnityCommons {
                 }
                 ClearQueue(removeFixed);
 
-                foreach ((int key, Function value) in nextUpdateFunctions) {
+                foreach (KeyValuePair<int, Function> kvp in nextUpdateFunctions) {
+                    (int key, Function value) = (kvp.Key, kvp.Value);
                     if (value.updateType != UpdateType.Fixed) continue;
                     value.action?.Invoke();
                     removeNextUpdate.Enqueue((key, value));
