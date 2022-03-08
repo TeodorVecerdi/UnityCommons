@@ -193,7 +193,7 @@ namespace UnityCommons {
         }
 
         /// <summary>
-        /// Returns <paramref name="enumerable"/> sorted using a quicksort algorithm
+        /// Returns <paramref name="list"/> sorted using a quicksort algorithm
         /// </summary>
         public static List<T> QuickSorted<T>(this List<T> list, Comparison<T> comparison) {
             if (list == null) throw new ArgumentNullException(nameof(list));
@@ -204,14 +204,14 @@ namespace UnityCommons {
         }
 
         /// <summary>
-        /// Returns <paramref name="enumerable"/> sorted using a quicksort algorithm
+        /// Returns <paramref name="list"/> sorted using a quicksort algorithm
         /// </summary>
         public static List<T> QuickSorted<T>(this List<T> list) where T : IComparable<T> {
             return QuickSorted(list, (comparable, comparable1) => comparable.CompareTo(comparable1));
         }
 
         /// <summary>
-        /// Returns <paramref name="enumerable"/> sorted using an insertion sorting algorithm
+        /// Returns <paramref name="list"/> sorted using an insertion sorting algorithm
         /// </summary>
         public static List<T> InsertionSorted<T>(this List<T> list, Comparison<T> comparison) {
             if (list == null) throw new ArgumentNullException(nameof(list));
@@ -222,7 +222,7 @@ namespace UnityCommons {
         }
 
         /// <summary>
-        /// Returns <paramref name="enumerable"/> sorted using an insertion sorting algorithm
+        /// Returns <paramref name="list"/> sorted using an insertion sorting algorithm
         /// </summary>
         public static List<T> InsertionSorted<T>(this List<T> list) where T : IComparable<T> {
             return InsertionSorted(list, (comparable, comparable1) => comparable.CompareTo(comparable1));
