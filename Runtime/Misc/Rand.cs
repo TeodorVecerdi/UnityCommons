@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UnityCommons {
     public static class Rand {
-        private static readonly RNGProvider provider = new RNGProvider();
+        private static IRNGProvider provider = new RNGProvider();
         private static readonly Stack<ulong> stateStack = new Stack<ulong>();
         private static uint iterations;
         private const float pi = 3.1415926535897932f;
@@ -16,6 +16,16 @@ namespace UnityCommons {
                 if (stateStack.Count == 0)
                     Debug.LogError("Modifying the initial rand seed. Call PushState() first. The initial rand seed should always be based on the startup time and set only once.");
                 provider.Seed = (uint) value;
+                iterations = 0U;
+            }
+        }
+
+        public static IRNGProvider Provider {
+            get => provider;
+            set {
+                uint currentSeed = provider.Seed;
+                provider = value;
+                provider.Seed = (uint) currentSeed;
                 iterations = 0U;
             }
         }
@@ -468,8 +478,8 @@ namespace UnityCommons {
 
         #endregion
 
-        private class RNGProvider {
-            public uint Seed = (uint) DateTime.Now.GetHashCode();
+        private class RNGProvider : IRNGProvider {
+            public uint Seed { get; set; } = (uint) DateTime.Now.GetHashCode();
 
             public int GetInt(uint iterations) {
                 return (int) GetHash((int) iterations);
@@ -490,6 +500,5 @@ namespace UnityCommons {
                 return (value << count) | (value >> (32 - count));
             }
         }
-
     }
 }
