@@ -7,8 +7,15 @@ namespace UnityCommons {
 
         public static Metadata GetMetadataComponent(this GameObject gameObject) {
             int instanceId = gameObject.GetInstanceID();
+
             if (metadataCache.ContainsKey(instanceId)) {
-                return metadataCache[instanceId];
+                Metadata metadataComponent = metadataCache[instanceId];
+                if (metadataComponent == null) {
+                    metadataComponent = gameObject.AddComponent<Metadata>();
+                    metadataCache[instanceId] = metadataComponent;
+                }
+
+                return metadataComponent;
             }
 
             Metadata metadata = gameObject.GetComponent<Metadata>();
