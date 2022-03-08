@@ -1,6 +1,6 @@
 {
   "name": "dev.vecerdi.unitycommons",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "displayName": "Unity Commons",
   "description": "Library of project-agnostic & reusable scripts.",
   "license": "MIT",
